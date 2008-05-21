@@ -21,7 +21,12 @@
  */
 class Terrain
 {
+		///najni¿szy punkt terenu
+		double _lowest;
+	
 	public:
+		
+		double lowest() { return _lowest; }
 	
 	    ///szerokoœæ jednego segmentu
 	    double step;

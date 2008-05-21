@@ -61,6 +61,8 @@ class World
 		
 	  /// Rysuje wode
 		void draw_water(const Camera2d& c);
+		
+		void draw_sky(const Camera2d& c);
         
        /// Rysuje ca³y œwiat
 		void draw(const Camera2d& c);

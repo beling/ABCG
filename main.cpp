@@ -8,20 +8,14 @@
 
 #include <fstream>
 #include "world.h"
-#include "timer.h"
-#include "libs/camera2d.h"
-#include "timer.h"
 #include "libs/utils.h"
 #include "LevelsProvider.h"
 
-World world;
-Timer timer;
-Camera2d camera(50.0, 0.0, 3.0);
+#include "main_init.h"
 
-#define m_anim 0
-#define m_pause 1
-#define m_edit 2
-char mode(m_edit); //czy jesteœmy w trybie: 0-animacji, 1-znimacji (pause), 2-edycji
+enum Mode {
+	m_anim, m_pause, m_edit //czy jesteœmy w trybie: 0-animacji, 1-znimacji (pause), 2-edycji
+} mode = m_edit;
 
 #define notPos -1000000.0
 double linkStartX(notPos), linkStartY,
@@ -31,31 +25,7 @@ const double gridStep = 5.0;
 
 bool fullScreen; //okreœla czy tryb pe³noekranowy
 
-LevelsProvider levels;
-
-void level_choose(int value) {
-    std::ifstream f(levels.file_name(value).c_str());
-    f >> world;
-    f.close();
-}
-
-void read_level_menu() {
-	int menu;
-
-	menu = glutCreateMenu(0);
-
-	for (int e = 0; e < levels.episodes_len(); ++e) {
-		int submenu = glutCreateMenu(level_choose);
-		for (int l = 0; l < levels.episode(e).levels_len(); ++l)
-			glutAddMenuEntry(levels.episode(e).level(l).c_str(), levels.id(e, l));
-		glutSetMenu(menu);
-		glutAddSubMenu(levels.episode(e).name.c_str(), submenu);
-	}
-
-	glutAttachMenu(GLUT_MIDDLE_BUTTON);
-}
-
-char* fileName; //wskazuje na nazwe pliku do zapisu odczytu
+/*char* fileName; //wskazuje na nazwe pliku do zapisu odczytu
 
 void fileSave() {
     if (!fileName) return;
@@ -69,7 +39,7 @@ void fileLoad() {
     std::ifstream f(fileName);
     f >> world;
     f.close();
-}
+}*/
 
 void setFullScreen(bool doFullScreen = true) {
     if (doFullScreen == fullScreen) return;
@@ -88,6 +58,11 @@ double snapToGrid(double sth) {
 void init() {    // Create Some Everyday Functions
 	glDisable(GL_DEPTH_TEST);
 	
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_BLEND);
+	//glEnable(GL_LINE_SMOOTH);
+	//glLineWidth(2.0);
+	
 	//glShadeModel(GL_SMOOTH);// Enable Smooth Shading	
     //glColor4f(1.0f,1.0f,1.0f,0.5f); 			
     //glBlendFunc(GL_SRC_ALPHA,GL_ONE);
@@ -104,7 +79,7 @@ void display () {   // Create The Display Function
   world.draw(camera);
   if (mode == m_edit) {
     camera.normalLine();  //rysuje siatke
-    glColor4d(0.2, 0.2, 0.2, 0.5);
+    glColor4f(0.0f, 0.0f, 0.0f, 0.1f);
     double l(camera.realLeft()), r(camera.realRight()), t(camera.realTop()), d(camera.realBottom());
     glBegin(GL_LINES); 
       for (double x = snapToGrid(l); x <= r; x += gridStep) {
@@ -117,13 +92,14 @@ void display () {   // Create The Display Function
       }
     glEnd();    
     if (linkStartX != notPos) {
-        glColor4d(0.7, 0.7, 0.7, 0.7);
+        glColor4f(0.7f, 0.7f, 0.7f, 1.0f);
         camera.zoomedLine();
         glBegin(GL_LINES);      
           glVertex2d(linkStartX, linkStartY);
           glVertex2d(linkEndX, linkEndY);
         glEnd();
     }
+    menu.draw();
   }
   glutSwapBuffers();  // Swap The Buffers To Not Be Left With A Clear Screen
 }
@@ -171,14 +147,14 @@ void keyboard(unsigned char key, int x, int y) {  // Create Keyboard Function
             glutPostRedisplay();
       }
       break;
-    case 's':
+    /*case 's':
       if (mode == m_edit) fileSave();
       break;
     case 'l':
       if (mode != m_edit) return;
       fileLoad();
       glutPostRedisplay();
-      break;
+      break;*/
     case 'c': //czyœci œwiat
       if (mode != m_edit) return;
       world.clear();
@@ -227,6 +203,7 @@ void arrow_keys(int a_keys, int x, int y)  // Create Special Function (required 
 }
 
 void mouse(int button, int state, int x, int y) {
+	if (mode == m_edit) if (menu.mouse_evt(button, state, x, y)) return;
     if (state != GLUT_UP) return;
     if (button == GLUT_MIDDLE_BUTTON) {
         camera.centerToScreen(x, y);
@@ -251,11 +228,18 @@ void mouse(int button, int state, int x, int y) {
 }
 
 void pasiveMouse(int x, int y) {
-    if (linkStartX == notPos) return;
+    if (linkStartX == notPos) {	//nothing draw now
+    	if (mode == m_edit) menu.mouse_move_evt(x, y); //try menu
+    	return;
+    }
     linkEndX = snapToGrid(camera.realX(x));
     linkEndY = snapToGrid(camera.realY(y));
     glutPostRedisplay();
 }
+
+//void motionMouse(int x, int y) {
+//	menu.mouse_move_evt(x, y); //try menu
+//}
 
 int main (int argc, char** argv)   // Create Main Function For Bringing It All Together
 {
@@ -273,10 +257,10 @@ int main (int argc, char** argv)   // Create Main Function For Bringing It All T
   glutPassiveMotionFunc(pasiveMouse);
   glutMotionFunc(pasiveMouse);
   
-  fileName = argc > 1 ? argv[1] : NULL;
+  //fileName = argc > 1 ? argv[1] : NULL;
   init();
   
-  read_level_menu();
+  init_menu();
   
   glutMainLoop();          // Initialize The Main Loop
   return 0;

@@ -79,7 +79,7 @@ void Vicicle::satisfyLineConstraints(Link& link) {
 }
 
 void Vicicle::draw() {
-    glColor3d(0.7, 0.9, 0.7);
+    glColor3f(112.0f / 255.0f, 92.0f / 255.0f, 92.0f / 255.0f);
     glBegin(GL_QUADS);
         glVertex2d(leftDown.pos.x, leftDown.pos.y); 
         glVertex2d(leftUp.pos.x, leftUp.pos.y);

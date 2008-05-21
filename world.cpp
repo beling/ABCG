@@ -24,23 +24,32 @@ World::World()
 
 World::~World() {}
 
-void World::draw_water(const Camera2d& c) {
-    //draw water:
-    double b = c.realBottom();
-    
+void World::draw_sky(const Camera2d& c) {
     glBegin(GL_QUADS);
     	const double l = c.realLeft(), r = c.realRight();
     	glColor3f(0.4f, 0.67f, 0.96f);
-    	glVertex2d(l, water_y + 300);
-    	glVertex2d(r, water_y + 300);
-    	glColor3f(0.5f, 0.8f, 1.0f);
-    	glVertex2d(r, water_y - 3);
-    	glVertex2d(l, water_y - 3);   	
+    	glVertex2d(l, 300);
+    	glVertex2d(r, 300);
+    	glColor3f(0.47f, 0.77f, 1.0f);
+    	glVertex2d(r, 0);
+    	glVertex2d(l, 0);
+    	
+    	glColor3f(0.4f, 0.67f, 0.96f);
+    	glVertex2d(r, - 300);
+    	glVertex2d(l, - 300);
+    	glColor3f(0.47f, 0.77f, 1.0f);
+    	glVertex2d(l, 0);
+    	glVertex2d(r, 0);
     glEnd();
-    
+}
+
+void World::draw_water(const Camera2d& c) {
+    //draw water:
+	double b = c.realBottom();
     if (b > water_y - 0.5) return;
+    const double l = c.realLeft(), r = c.realRight();
     b -= 1.0;
-    glColor3d(0.1, 0.3, 1.0);
+    glColor4f(0.1f, 0.3f, 1.0f, 0.2f);
     glBegin(GL_POLYGON);
     	//const double l = c.realLeft(), r = c.realRight();
     	glVertex2d(l, b);
@@ -56,8 +65,7 @@ void World::draw_water(const Camera2d& c) {
 }
 
 void World::draw(const Camera2d& c) {
-	draw_water(c);
-	terrain.draw(c);
+	draw_sky(c);
 	train.draw();
 //	for (std::list<Link>::iterator i = bridge.begin(); i != bridge.end(); i++)
 //	   i->draw();
@@ -68,7 +76,9 @@ void World::draw(const Camera2d& c) {
        i->draw(); 
     glColor3f(0.7, 0.2, 0.3);
 	for (std::list<Node*>::iterator i = unactive_nodes.begin(); i != unactive_nodes.end(); i++)  
-       (*i)->draw();        
+       (*i)->draw();
+	draw_water(c);
+	terrain.draw(c);
 }
 
 void World::go() {

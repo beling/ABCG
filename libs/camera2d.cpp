@@ -2,7 +2,7 @@
 
 #include "camera2d.h" // class's header file
 
-void Camera2d::set() {
+void Camera2d::set() const {
     double sx = (double)w / zoom / 2.0;
     double sy = (double)h / zoom / 2.0;
     glViewport(0, 0, w, h);

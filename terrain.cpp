@@ -45,7 +45,7 @@ bool Terrain::touch(const double& x, const double& y) const {
 //}    
 
 inline void terrainVertex(double x, double y) {
-	glColor3f(0.1f, std::max(y/200.0+0.9, 0.2), 0.1f);
+	glColor4f(0.1f, std::max(y/200.0+0.9, 0.2), 0.1f, 0.9f);
 	glVertex2d(x, y);
 }
 
@@ -53,6 +53,7 @@ inline void terrainVertex(double x, double y) {
 void Terrain::draw(const Camera2d& c) {
     double b = c.realBottom();
     if (b > 0.0) return; //kamera patrzy za wysoko
+    if (b > _lowest) b = _lowest - 1.0;
     double l = fmin(c.realLeft(), -step);
     double r = fmax(c.realRight(), toX()+step);
     //glColor3f(0.0f, 0.7, 0.0f);//<-TODO: Color calc.
@@ -80,8 +81,11 @@ std::istream& operator>>(std::istream& in, Terrain &t) {
     in >> len; //d³ugoœæ
     t.heights.clear();
     t.reserve(len);
-    for (std::vector<double>::iterator i = t.heights.begin(); i != t.heights.end(); i++)
+    t._lowest = 0.0;
+    for (std::vector<double>::iterator i = t.heights.begin(); i != t.heights.end(); i++) {
         in >> *i;
+        if (*i < t._lowest) t._lowest = *i;
+    }
     return in;
 }
 

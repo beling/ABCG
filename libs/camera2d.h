@@ -22,7 +22,7 @@ class Camera2d {
 	~Camera2d();
 	
     ///ustawia obraz openGL zgodnie z kamer¹
-    void set();
+    void set() const;
 
     ///zapamiêtuje nowy rozmiar okna
     void resize(int width, int height);
@@ -72,13 +72,13 @@ class Camera2d {
     }
     
     ///Ustawia normaln¹ szerokoœæ linii (równ¹ 1)
-    void normalLine() {
+    void normalLine() const {
         glLineWidth(1.0);
     }
     
     ///Ustawia gruboœæ lini uwzglêdniaj¹c zoom
-    void zoomedLine() {
-        glLineWidth(zoom);
+    void zoomedLine() const {
+        glLineWidth(zoom*1.4);
     }
 
 };

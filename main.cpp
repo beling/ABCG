@@ -174,8 +174,8 @@ void keyboard(unsigned char key, int x, int y) {  // Create Keyboard Function
       break;  
     case 27:        // When Escape Is Pressed...
     case 'q':
-      exit(0);   // Exit The Program
-      break;        // Ready For Next Case
+    	just_exit();   // Exit The Program
+    	break;        // Ready For Next Case
 
   }
 }

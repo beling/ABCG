@@ -17,7 +17,7 @@ struct Button {
 	
 	virtual void on_mouse_escape() {};
 	
-	//virtual void on_button_click() {};
+	virtual void on_click() {};
 	
 	std::string text;
 	
@@ -41,6 +41,16 @@ struct GlutMenuButton: public Button {
 		glutDetachMenu(GLUT_LEFT_BUTTON);
 	}
 
+};
+
+struct SimpleFuncButton: public Button {
+	
+	void (*fun)(void);
+	
+	SimpleFuncButton(const std::string& text, void (*fun)(void)): Button(text), fun(fun) {}
+	
+	virtual void on_click() { fun(); }
+	
 };
 
 class Menu {
@@ -87,6 +97,8 @@ public:
 	void add(Button* button);
 	
 	void add_glut_menu(const std::string& text, int menu_id) { add(new GlutMenuButton(text, menu_id)); }
+	
+	void add_fun(const std::string& text, void (*fun)(void)) { add(new SimpleFuncButton(text, fun)); }
 	
 	void draw();
 };

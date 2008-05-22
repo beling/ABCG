@@ -33,8 +33,11 @@ int read_level_menu() {
 	return menu;
 }
 
+void just_exit() { exit(0); }
+
 void init_menu() {
 	menu.add_glut_menu("level", read_level_menu());
+	menu.add_fun("exit", just_exit);
 }
 
 #endif /*MAIN_INIT_H_*/

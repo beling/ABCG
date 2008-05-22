@@ -9,15 +9,18 @@
 #include "train.h"
 
 #include <list>
-//#include <vector>
+#include <vector>
 
 /**
  * Reprezentuje œwiat gry, zawiera ca³¹ fizyke i umie siê narysowaæ
  */
-class World
-{
+class World {
+	
     private:
         std::list<Node>::iterator addNode(const Node& toAdd);
+        
+        /// czyœci links i kopiuje links_all na jego miejsce
+        void clone_links_list();
     
 	public:
 		/// Krok czasowy
@@ -38,11 +41,14 @@ class World
        /// poci¹g 
         Train train;
         
+       /// wszystkie ³¹cza
+        std::list<Link> links_all;
+        
        /// ³¹cza (aktywne), zawieraj¹ te¿ belki mostu
         std::list<Link> links;
         
        /// ³acza (nieaktywne, nie poruszamy nimi, po zerwaniu)
-        std::list<Link> unactive_links;
+        //std::list<Link> unactive_links;
         
        /// ³acza stanowi¹ce sam most (na wysokoœci 0.0) 
         std::list<Link*> bridge;
@@ -99,8 +105,7 @@ class World
         @param prec precyzja przy wyszukiwaniu ju¿ istniej¹cych
         @return dodany link
        */
-        std::list<Link>::iterator addLink(const double x0, const double y0,
-                      const double x1, const double y1, const double prec = 0.0); 
+        std::list<Link>::iterator addLink(const double x0, const double y0, const double x1, const double y1, const double prec = 0.0); 
                       
        ///Usuwa ³acze lub wêze³ w miejscu o podanych wspó³rzêdnych
         void delAt(const double x, const double y, const double prec = 0.0);

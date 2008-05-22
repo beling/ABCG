@@ -101,10 +101,10 @@ void World::go() {
 	for (std::list<Link>::iterator i = links.begin(); i != links.end();)
 	  if (i->toLong()) {
 	     bridge.remove(&(*i));
-	     unactive_links.push_back(*i);
+	     //unactive_links.push_back(*i); //TODO unactive_links
          i = links.erase(i);
-         //TODO tu mo¿na by pozbyæ siê z niczym nie po³±czonych wêz³ów
-      } else i++;         //usówa zerwane ³acza
+         //TODO tu mo¿na by pozbyæ siê z niczym nie po³¹czonych wêz³ów
+      } else ++i;         //usówa zerwane ³acza
 } 
 
 void World::start() {
@@ -118,10 +118,12 @@ void World::start() {
 
 void World::stop() {
     time = 0.0;
-   	for (std::list<Node>::iterator i = nodes.begin(); i != nodes.end(); i++)
+	//kopiujemy link do g³ównej listy
+    clone_links_list();
+    
+    for (std::list<Node>::iterator i = nodes.begin(); i != nodes.end(); i++)
    	    i->reset();  //resetuje wêz³y 
-   	links.insert(links.end(), unactive_links.begin(), unactive_links.end());
-   	unactive_links.clear();  //wszystkie ³¹cza s¹ aktywne na pocz¹tku
+   	
    	bridge.clear();
    	for (std::list<Link>::iterator i = links.begin(); i != links.end(); i++) {
    	    i->reset();
@@ -163,12 +165,18 @@ std::list<Link>::iterator World::addLink(const double x0, const double y0, const
         second = addNode(Node(x1, y1, 500.0));  
     
     if (first->pos.x > second->pos.x) //sortujemy po wspó³rzêdnej x
-        links.push_back(Link(*second, *first));
+        links_all.push_back(Link(*second, *first));
     else
-        links.push_back(Link(*first, *second));//Dodaje nowe ³¹cze
+    	links_all.push_back(Link(*first, *second));//Dodaje nowe ³¹cze
+    links.push_back(links_all.back());
         
-    return --links.end();
+    return --links_all.end();
 };
+
+void World::clone_links_list() {
+	links.clear();
+	std::copy(links_all.begin(), links_all.end(), std::back_inserter(links));
+}
 
 void World::delAt(const double x, const double y, const double prec) {
     std::list<Node>::iterator node = findNode(x, y, prec);
@@ -177,22 +185,24 @@ void World::delAt(const double x, const double y, const double prec) {
     }    
     //usówamy wie¿cho³ek
     //najpierw wszystkie przyleg³e linki i ew. wie¿cho³ki stopnia 1
-    for (std::list<Link>::iterator l = find_if(links.begin(), links.end(), std::bind2nd(Link::IsEnd(), *node));
-         l != links.end(); l = find_if(l, links.end(), std::bind2nd(Link::IsEnd(), *node))) {
+    for (std::list<Link>::iterator l = find_if(links_all.begin(), links_all.end(), std::bind2nd(Link::IsEnd(), *node));
+         l != links_all.end(); l = find_if(l, links_all.end(), std::bind2nd(Link::IsEnd(), *node))) {
              Node& toDel = (l->A == *node ? l->B : l->A); //2gi koniec linka
-             l = links.erase(l); //usówam link i przesówam wskaŸnik
-             if (count_if(links.begin(), links.end(), std::bind2nd(Link::IsEnd(), toDel)) == 0) {
+             l = links_all.erase(l); //usówam link i przesówam wskaŸnik
+             if (count_if(links_all.begin(), links_all.end(), std::bind2nd(Link::IsEnd(), toDel)) == 0) {
                   unactive_nodes.remove(&toDel);
                   nodes.remove(toDel);        //jest nieu¿ywany wiêc usówamy
              }   
-         }    
+         }
+    clone_links_list();
     unactive_nodes.remove(&*node);
-    nodes.erase(node);          
+    nodes.erase(node);
 };
 
 void World::clear() {
     bridge.clear();
-    unactive_links.clear();
+    links_all.clear();
+    //unactive_links.clear();//TODO unactive_links
     links.clear();
     unactive_nodes.clear();
     nodes.clear();
@@ -217,7 +227,7 @@ std::istream& operator>>(std::istream& in, World &w) {
 
 std::ostream& operator<<(std::ostream& out, World &w) {
     out << w.terrain << std::endl << w.links.size() << std::endl;
-    for (std::list<Link>::iterator i = w.links.begin(); i != w.links.end(); i++)
+    for (std::list<Link>::iterator i = w.links_all.begin(); i != w.links_all.end(); i++)
         out << ' ' << i->A.pos_0.x << ' ' << i->A.pos_0.y << ' '
                    << i->B.pos_0.x << ' ' << i->B.pos_0.y << std::endl;
     return out;

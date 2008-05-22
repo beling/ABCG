@@ -59,7 +59,7 @@ class Menu {
 	
 	int _left, _top, last_mouse_over_btn_nr;
 	
-	static const int btn_width = 100;
+	static const int btn_width = 120;
 	
 	static const int btn_height = 30;
 	

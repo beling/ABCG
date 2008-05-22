@@ -30,14 +30,14 @@ void World::draw_sky(const Camera2d& c) {
     	glColor3f(0.4f, 0.67f, 0.96f);
     	glVertex2d(l, 300);
     	glVertex2d(r, 300);
-    	glColor3f(0.47f, 0.77f, 1.0f);
+    	glColor3f(0.87f, 0.77f, 0.6f);
     	glVertex2d(r, 0);
     	glVertex2d(l, 0);
     	
     	glColor3f(0.4f, 0.67f, 0.96f);
     	glVertex2d(r, - 300);
     	glVertex2d(l, - 300);
-    	glColor3f(0.47f, 0.77f, 1.0f);
+    	glColor3f(0.87f, 0.77f, 0.6f);
     	glVertex2d(l, 0);
     	glVertex2d(r, 0);
     glEnd();

@@ -13,11 +13,7 @@
 
 #include "main_init.h"
 
-enum Mode {
-	m_anim, m_pause, m_edit //czy jesteœmy w trybie: 0-animacji, 1-znimacji (pause), 2-edycji
-} mode = m_edit;
-
-#define notPos -1000000.0
+const double notPos = -1000000.0;
 double linkStartX(notPos), linkStartY,
        linkEndX, linkEndY;  //jeœli rysujemy link to wyznacza jego wsp.
 
@@ -79,18 +75,20 @@ void display () {   // Create The Display Function
   world.draw(camera);
   if (mode == m_edit) {
     camera.normalLine();  //rysuje siatke
-    glColor4f(0.0f, 0.0f, 0.0f, 0.1f);
-    double l(camera.realLeft()), r(camera.realRight()), t(camera.realTop()), d(camera.realBottom());
-    glBegin(GL_LINES); 
-      for (double x = snapToGrid(l); x <= r; x += gridStep) {
-            glVertex2d(x, t);
-            glVertex2d(x, d);
-      }
-      for (double y = snapToGrid(d); y <= t; y += gridStep) {
-            glVertex2d(l, y);
-            glVertex2d(r, y);
-      }
-    glEnd();    
+    if (grid) {
+	    glColor4f(0.0f, 0.0f, 0.0f, 0.1f);
+	    double l(camera.realLeft()), r(camera.realRight()), t(camera.realTop()), d(camera.realBottom());
+	    glBegin(GL_LINES); 
+	      for (double x = snapToGrid(l); x <= r; x += gridStep) {
+	            glVertex2d(x, t);
+	            glVertex2d(x, d);
+	      }
+	      for (double y = snapToGrid(d); y <= t; y += gridStep) {
+	            glVertex2d(l, y);
+	            glVertex2d(r, y);
+	      }
+	    glEnd();
+    }
     if (linkStartX != notPos) {
         glColor4f(0.7f, 0.7f, 0.7f, 1.0f);
         camera.zoomedLine();

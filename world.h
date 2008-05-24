@@ -11,6 +11,8 @@
 #include <list>
 #include <vector>
 
+#include "Enviroment.h"
+
 /**
  * Reprezentuje œwiat gry, zawiera ca³¹ fizyke i umie siê narysowaæ
  */
@@ -28,9 +30,11 @@ class World {
 		
 		static const double water_y = -10.0;
 		
-		double entropy(const double y) const { return y > water_y ? 0.000001 : 0.00001; }
-		
-		double gravity_force(const double y) const { return y > water_y ? gravForce : gravForce/8.0; }
+		static const Enviroment& enviroment(const double y) {
+			static Enviroment normal(0.000001, gravForce);
+			static Enviroment under_water(0.00002, gravForce/6.0);
+			return y > water_y ? normal : under_water;
+		}
 		
 	   /// aktualny czas
 	    double time;

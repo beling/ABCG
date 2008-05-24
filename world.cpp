@@ -88,7 +88,7 @@ void World::go() {
 	for (std::list<Link>::iterator i = links.begin(); i != links.end(); i++)
         i->calcForces();                    //dodaje si造 od belek
     for (std::list<Node>::iterator i = nodes.begin(); i != nodes.end(); i++) {
-        i->goAndZeroForce(timeStep, entropy(i->pos.y), gravity_force(i->pos.y));        //poruszam w瞛造 i zeruje si造
+        i->goAndZeroForce(timeStep, enviroment(i->pos.y));        //poruszam w瞛造 i zeruje si造
         terrain.correctPoint(i->pos);		//pilnuje by nie wylecia造 za plansze
     }
     train.go(timeStep, *this);        //porusza poci庵iem

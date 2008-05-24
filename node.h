@@ -5,6 +5,8 @@
 #include "PhysicConsts.h"
 #include "libs/vec2d.h"
 
+#include "Enviroment.h"
+
 /**
  * No description
  */
@@ -50,25 +52,25 @@ class Node
           http://www.ioi.dk/Homepages/thomasj/publications/gdc2001.htm
           http://en.wikipedia.org/wiki/Verlet_integration
         */
-        void go(const double time, const double entropy, const double gravForce) {
+        void go(const double time, const Enviroment& enviroment) {
             if (!movable) return;
             //const double f = 0.000001;	//f = [0.0, 1.0]
             const double timeXtime = time * time;
             double temp = pos.x;
             //x += x - prevX + (forceX / mass) * timeXtime; //normalne równanie
-            pos.x = (2.0-entropy)*pos.x - (1.0-entropy)*prev_pos.x + (force.x / mass) * timeXtime; //z t³umieniem
+            pos.x = (2.0-enviroment.entropy)*pos.x - (1.0-enviroment.entropy)*prev_pos.x + (force.x / mass) * timeXtime; //z t³umieniem
             //Vx = (x - prevX) / (2.0 * time);	//ok, potrzebne do innego, ,,prawdziwszego'', sposobu liczenia t³umienia
             prev_pos.x = temp;
             temp = pos.y;
             //y += y - prevY + (forceY / mass - gravForce) * timeXtime;
-            pos.y = (2.0-entropy)*pos.y - (1.0-entropy)*prev_pos.y + (force.y / mass - gravForce) * timeXtime; //z t³umieniem
+            pos.y = (2.0-enviroment.entropy)*pos.y - (1.0-enviroment.entropy)*prev_pos.y + (force.y / mass - enviroment.gravity_force) * timeXtime; //z t³umieniem
             //Vy = (y - prevY) / (2.0 * time);	//ok, potrzebne do innego, ,,prawdziwszego'', sposobu liczenia t³umienia
             prev_pos.y = temp;  
         }
         
         ///Porusza i zeruje si³e:
-        void goAndZeroForce(const double time, const double entropy, const double gravForce) {
-            go(time, entropy, gravForce);
+        void goAndZeroForce(const double time, const Enviroment& enviroment) {
+            go(time, enviroment);
             force.set(0.0, 0.0);
         }
 	

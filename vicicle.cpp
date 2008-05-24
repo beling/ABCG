@@ -89,15 +89,15 @@ void Vicicle::draw() {
 }
 
 void Vicicle::go(const double time, const World& world) {
-    leftDown.go(time, world.entropy(leftDown.pos.y), world.gravity_force(leftDown.pos.y));
-    rightDown.go(time, world.entropy(rightDown.pos.y), world.gravity_force(rightDown.pos.y));
-    leftUp.go(time, world.entropy(leftUp.pos.y), world.gravity_force(leftUp.pos.y));
-    rightUp.go(time, world.entropy(rightUp.pos.y), world.gravity_force(rightUp.pos.y));
+    leftDown.go(time, world.enviroment(leftDown.pos.y));
+    rightDown.go(time, world.enviroment(rightDown.pos.y));
+    leftUp.go(time, world.enviroment(leftUp.pos.y));
+    rightUp.go(time, world.enviroment(rightUp.pos.y));
 }
 
 void Vicicle::goAndZeroForce(const double timeXtime, const World& world) {
-    leftDown.goAndZeroForce(timeXtime, world.entropy(leftDown.pos.y), world.gravity_force(leftDown.pos.y));
-    rightDown.goAndZeroForce(timeXtime, world.entropy(rightDown.pos.y), world.gravity_force(rightDown.pos.y));
-    leftUp.goAndZeroForce(timeXtime, world.entropy(leftUp.pos.y), world.gravity_force(leftUp.pos.y));
-    rightUp.goAndZeroForce(timeXtime, world.entropy(rightUp.pos.y), world.gravity_force(rightUp.pos.y));
+    leftDown.goAndZeroForce(timeXtime, world.enviroment(leftDown.pos.y));
+    rightDown.goAndZeroForce(timeXtime, world.enviroment(rightDown.pos.y));
+    leftUp.goAndZeroForce(timeXtime, world.enviroment(leftUp.pos.y));
+    rightUp.goAndZeroForce(timeXtime, world.enviroment(rightUp.pos.y));
 }

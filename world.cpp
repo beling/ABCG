@@ -19,6 +19,9 @@ World::World()
 	terrain.heights.push_back(-61.0);
 	terrain.heights.push_back(-54.0);
 	terrain.heights.push_back(-44.0);
+	
+	money_limit = 20000.0;
+	
 	stop();
 }
 
@@ -151,7 +154,9 @@ std::list<Node>::iterator World::addNode(const Node& toAdd) {
 }
 
 std::list<Link>::iterator World::addLink(const double x0, const double y0, const double x1, const double y1, const double prec) {
-    std::list<Node>::iterator first = findNode(x0, y0, prec);
+	if (abs(x0 - x1) < prec && abs(y0 - y1) < prec) return links_all.end();
+	
+	std::list<Node>::iterator first = findNode(x0, y0, prec);
     std::list<Node>::iterator second = findNode(x1, y1, prec);
     
     if (first != nodes.end() && second != nodes.end()) //jesli istnieje ju¿ link ³¹cz¹cy to wychodzimy
@@ -172,6 +177,15 @@ std::list<Link>::iterator World::addLink(const double x0, const double y0, const
         
     return --links_all.end();
 };
+
+bool World::addLinkIfHaveMonay(const double x0, const double y0, const double x1, const double y1, const double prec) {
+	if (money_left() >= link_prize(x0, y0, x1, y1)) {
+		addLink(x0, y0, x1, y1, prec);
+		return true;
+	} else
+		return false;
+}
+         
 
 void World::clone_links_list() {
 	links.clear();
@@ -231,4 +245,15 @@ std::ostream& operator<<(std::ostream& out, World &w) {
         out << ' ' << i->A.pos_0.x << ' ' << i->A.pos_0.y << ' '
                    << i->B.pos_0.x << ' ' << i->B.pos_0.y << std::endl;
     return out;
+}
+
+double World::link_prize(double len) {
+	return len*len + 2.0*len;
+}
+
+double World::money_left() const {
+	double sum = 0.0;
+	for (std::list<Link>::const_iterator i = links_all.begin(); i != links_all.end(); ++i)
+		sum += link_prize(i->length);
+	return money_limit - sum;
 }

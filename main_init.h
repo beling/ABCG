@@ -4,12 +4,13 @@
 #include "libs/Menu.h"
 #include "libs/camera2d.h"
 #include "libs/timer.h"
+#include <sstream>
 
 
 Timer timer;
 Camera2d camera(50.0, 0.0, 3.0);
 
-Menu menu(camera, 10, 10);
+Menu menu(10, 10);
 
 World world;
 LevelsProvider levels;
@@ -47,9 +48,20 @@ void grid_on_off() {
 	glutPostRedisplay();
 }
 
+struct MoneyText: public Button {
+	
+	virtual std::string text() const { std::stringstream s; s << "$" << world.money_left(); return s.str(); }
+	
+	virtual int length() const { return 120; };
+	
+} money_text;
+
 void init_menu() {
 	menu.add_glut_menu("level", read_level_menu());
 	menu.add_fun("grid on/off", grid_on_off);
+	menu.add_space(40);	
+	menu.add(&money_text);
+	menu.add_space(40);
 	menu.add_fun("exit", just_exit);
 }
 

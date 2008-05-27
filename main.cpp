@@ -13,29 +13,11 @@
 
 #include "main_init.h"
 
-const double notPos = -1000000.0;
-double linkStartX(notPos), linkStartY,
-       linkEndX, linkEndY;  //jeœli rysujemy link to wyznacza jego wsp.
+vec2d<double> linkStart(NAN, NAN), linkEnd(NAN, NAN); //jeœli rysujemy link to wyznacza jego wsp.
 
 const double gridStep = 5.0;
 
 bool fullScreen; //okreœla czy tryb pe³noekranowy
-
-/*char* fileName; //wskazuje na nazwe pliku do zapisu odczytu
-
-void fileSave() {
-    if (!fileName) return;
-    std::ofstream f(fileName);
-    f << world;
-    f.close();
-}
-
-void fileLoad() {
-    if (!fileName) return;
-    std::ifstream f(fileName);
-    f >> world;
-    f.close();
-}*/
 
 void setFullScreen(bool doFullScreen = true) {
     if (doFullScreen == fullScreen) return;
@@ -89,13 +71,19 @@ void display () {   // Create The Display Function
 	      }
 	    glEnd();
     }
-    if (linkStartX != notPos) {
-        glColor4f(0.7f, 0.7f, 0.7f, 1.0f);
+    if (!isnan(linkStart.x) && !isnan(linkEnd.x)) {
+    	const double link_len = linkStart.distans(linkEnd);
+    	if (world.has_money_for(link_len))
+    		glColor4f(0.5f, 0.8f, 0.5f, 0.9f);
+    	else
+    		glColor4f(0.8f, 0.5f, 0.5f, 0.9f);
         camera.zoomedLine();
         glBegin(GL_LINES);      
-          glVertex2d(linkStartX, linkStartY);
-          glVertex2d(linkEndX, linkEndY);
+          glVertex2d(linkStart.x, linkStart.y);
+          glVertex2d(linkEnd.x, linkEnd.y);
         glEnd();
+        const vec2d<double> msgplace = (linkStart + linkEnd) / 2.0;
+        nice_output(camera.screenX(msgplace.x), camera.screenY(msgplace.y) - 30, std::string("$") + cast<std::string>(world.link_prize(link_len)));
     }
     menu.draw();
   }
@@ -135,7 +123,7 @@ void keyboard(unsigned char key, int x, int y) {  // Create Keyboard Function
       glutPostRedisplay();
       break;
     case 32:    //start/stop animacji
-      linkStartX = notPos; //anulujemy rysowanie linka
+      linkStart.x = NAN; //anulujemy rysowanie linka
       if (mode == m_edit) {
             world.start();      
             mode = m_anim;     
@@ -208,30 +196,29 @@ void mouse(int button, int state, int x, int y) {
         glutPostRedisplay();
     }
     if (mode != m_edit) return;
-    double realX = snapToGrid(camera.realX(x)),
-           realY = snapToGrid(camera.realY(y));
+    vec2d<double> real(snapToGrid(camera.realX(x)), snapToGrid(camera.realY(y)));
     if (button == GLUT_LEFT_BUTTON) {
-        if (linkStartX != notPos) //koñczymy rysowaæ link
-            world.addLink(linkStartX, linkStartY, realX, realY, gridStep / 4.0);
-        linkStartX = realX;
-        linkStartY = realY;
+        if (!isnan(linkStart.x)) { //koñczymy rysowaæ link
+        	if (world.addLinkIfHaveMonay(linkStart.x, linkStart.y, real.x, real.y, gridStep / 4.0))
+        		linkStart = real;
+        } else
+        	linkStart = real;
     }
     if (button == GLUT_RIGHT_BUTTON) {
-        if (linkStartX == notPos) //usówamy link
-            world.delAt(realX, realY);
+        if (isnan(linkStart.x)) //usówamy link
+            world.delAt(real.x, real.y);
         else                    //anulujemy rysowanie linka
-            linkStartX = notPos;
+            linkStart.x = linkEnd.x = NAN;
     }
     glutPostRedisplay();
 }
 
 void pasiveMouse(int x, int y) {
-    if (linkStartX == notPos) {	//nothing draw now
+    if (isnan(linkStart.x)) {	//nothing draw now
     	if (mode == m_edit) menu.mouse_move_evt(x, y); //try menu
     	return;
     }
-    linkEndX = snapToGrid(camera.realX(x));
-    linkEndY = snapToGrid(camera.realY(y));
+    linkEnd.set(snapToGrid(camera.realX(x)), snapToGrid(camera.realY(y)));
     glutPostRedisplay();
 }
 

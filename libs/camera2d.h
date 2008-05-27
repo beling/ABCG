@@ -32,9 +32,17 @@ class Camera2d {
         return this->x + ((double) x - (double)w/2.0) / zoom;
     }
     
+    int screenX(double x) const {
+    	return (x - this->x) * zoom + double(w)/2.0;
+    }
+    
     ///przelicza podan¹ wspó³rzêdn¹ ekranow¹ y na rzeczywist¹ (w rysowanym œwiecie)
     double realY(int y) const {
         return this->y + ((double)h/2.0 - (double) y) / zoom;
+    }
+    
+    int screenY(double y) const {
+    	return double(h)/2.0 - (y - this->y) * zoom;
     }
     
     double realLeft() const {

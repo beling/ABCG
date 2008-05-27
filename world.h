@@ -10,6 +10,7 @@
 
 #include <list>
 #include <vector>
+#include "libs/vec2d.h"
 
 #include "Enviroment.h"
 
@@ -38,6 +39,9 @@ class World {
 		
 	   /// aktualny czas
 	    double time;
+	    
+	   /// Iloœæ kasy do wydania
+	    double money_limit;
 	
 	   /// teren
         Terrain terrain;
@@ -109,8 +113,10 @@ class World {
         @param prec precyzja przy wyszukiwaniu ju¿ istniej¹cych
         @return dodany link
        */
-        std::list<Link>::iterator addLink(const double x0, const double y0, const double x1, const double y1, const double prec = 0.0); 
-                      
+        std::list<Link>::iterator addLink(const double x0, const double y0, const double x1, const double y1, const double prec = 0.0);  
+        
+        bool addLinkIfHaveMonay(const double x0, const double y0, const double x1, const double y1, const double prec = 0.0);  
+                
        ///Usuwa ³acze lub wêze³ w miejscu o podanych wspó³rzêdnych
         void delAt(const double x, const double y, const double prec = 0.0);
         
@@ -119,6 +125,15 @@ class World {
         
         ///Zapisuje teren do strumienia. Krok, iloœæ wysokoœci i kolejne wysokoœci. A nastêpnie most (pary punktów).
         friend std::ostream& operator<<(std::ostream& out, World &t);
+        
+        static double link_prize(double len);
+        
+        static double link_prize(double x1, double y1, double x2, double y2) { return link_prize(vec2d<double>(x1, y1).distans(x2, y2)); }
+        
+        ///Ile kasy pozosta³o
+	    double money_left() const;
+	    
+	    bool has_money_for(double len) { return money_left() >= link_prize(len); }
 		
 };
 

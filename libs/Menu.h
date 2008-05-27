@@ -8,8 +8,12 @@
 
 #include "camera2d.h"
 
-void bitmap_output(int x, int y, const std::string string, void *font = GLUT_BITMAP_HELVETICA_18);
-void stroke_output(int x, int y, const char *format);
+void bitmap_output(int x, int y, const std::string& string, void *font = GLUT_BITMAP_HELVETICA_18);
+unsigned bitmap_output_width(const std::string& string, void *font = GLUT_BITMAP_HELVETICA_18);
+//void stroke_output(int x, int y, const char *format);
+
+enum { BG_NONE = -2, BR_AUTO_WIDTH = -1 };
+void nice_output(int x, int y, const std::string& string, int draw_bg = BR_AUTO_WIDTH, void *font = GLUT_BITMAP_HELVETICA_18);
 
 struct Button {
 	
@@ -19,17 +23,39 @@ struct Button {
 	
 	virtual void on_click() {};
 	
-	std::string text;
+	virtual std::string text() const { return std::string(); }
 	
-	Button(const std::string& text): text(text) {}
+	virtual int length() const { return bitmap_output_width(text().c_str()) + 20; };
 	
 };
 
-struct GlutMenuButton: public Button {
+struct Space: public Button {
+	
+	unsigned w;
+	
+	Space(unsigned w = 10): w(w) {}
+	
+	virtual int length() const { return w; }
+	
+};
+
+struct TextButton: public Button {
+	
+	std::string _text;
+	
+	TextButton(const std::string& text): _text(text) {}
+	
+	virtual std::string text() const { return _text; }
+	
+	void text(const std::string& str) { _text = str; }
+	
+};
+
+struct GlutMenuButton: public TextButton {
 	
 	int glut_menu_nr;
 	
-	GlutMenuButton(const std::string& text, int glut_menu_nr): Button(text), glut_menu_nr(glut_menu_nr) {}
+	GlutMenuButton(const std::string& text, int glut_menu_nr): TextButton(text), glut_menu_nr(glut_menu_nr) {}
 	
 	virtual void on_mouse_enter() {
 		glutSetMenu(glut_menu_nr);
@@ -43,11 +69,11 @@ struct GlutMenuButton: public Button {
 
 };
 
-struct SimpleFuncButton: public Button {
+struct SimpleFuncButton: public TextButton {
 	
 	void (*fun)(void);
 	
-	SimpleFuncButton(const std::string& text, void (*fun)(void)): Button(text), fun(fun) {}
+	SimpleFuncButton(const std::string& text, void (*fun)(void)): TextButton(text), fun(fun) {}
 	
 	virtual void on_click() { fun(); }
 	
@@ -55,19 +81,17 @@ struct SimpleFuncButton: public Button {
 
 class Menu {
 	
-	const Camera2d& camera;
-	
 	int _left, _top, last_mouse_over_btn_nr;
 	
-	static const int btn_width = 120;
-	
 	static const int btn_height = 30;
+	
+	static const int btn_pad = 2;
 	
 	std::vector<Button*> buttons;
 	
 public:
 	
-	Menu(const Camera2d& camera, const int left, const int top);
+	Menu(const int left, const int top);
 	
 	virtual ~Menu();
 	
@@ -75,7 +99,7 @@ public:
 	
 	int top() const { return _top; }
 	
-	int right() const { return _left + btn_width * buttons.size(); }
+	//int right() const { return _left + btn_width * buttons.size(); }
 	
 	int bottom() const { return _top + btn_height; }
 	
@@ -99,6 +123,10 @@ public:
 	void add_glut_menu(const std::string& text, int menu_id) { add(new GlutMenuButton(text, menu_id)); }
 	
 	void add_fun(const std::string& text, void (*fun)(void)) { add(new SimpleFuncButton(text, fun)); }
+	
+	void add_text(const std::string& text) { add(new TextButton(text)); }
+	
+	void add_space(const unsigned width = 20) { add(new Space(width)); }
 	
 	void draw();
 };

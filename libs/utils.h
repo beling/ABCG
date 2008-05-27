@@ -15,4 +15,18 @@ inline const T& bound(const T& value, const T& min, const T& max) {
 	return value;
 }
 
+/**
+ * Conver object from one type to another using std::stringstream.
+ * @param arg to convert
+ * @return converted
+ */
+template <typename dst, typename src>
+inline dst cast(const src& arg) {
+	std::stringstream s;
+	s << arg;
+	dst result;
+	s >> result;
+	return result;
+}
+
 #endif /*UTILS_H_*/

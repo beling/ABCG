@@ -2,39 +2,43 @@
 
 #include <GL/gl.h>
 
-void bitmap_output(int x, int y, const std::string string, void *font)
+void bitmap_output(int x, int y, const std::string& string, void *font)
 {
-	//glPushMatrix();
-	//gluOrtho2D(0.0, 0.0, 600.0, 400.0);
 	glRasterPos2f(x, y);
-	for (unsigned i = 0; i < string.length(); i++) {
+	for (unsigned i = 0; i < string.length(); i++)
 		glutBitmapCharacter(font, string[i]);
+}
+
+unsigned bitmap_output_width(const std::string& string, void *font) {
+	unsigned result = 0;
+	for (unsigned i = 0; i < string.length(); i++) result += glutBitmapWidth(font, string[i]);
+	return result;
+}
+
+void nice_output(int x, int y, const std::string& string, int bg_width, void *font) {
+	glPushMatrix();
+	glLoadIdentity();
+	const double h = glutGet(GLUT_WINDOW_HEIGHT);
+	gluOrtho2D(0.0, glutGet(GLUT_WINDOW_WIDTH), 0.0, h);
+	y = h - y;
+	if (BG_NONE != bg_width) {
+		if (BR_AUTO_WIDTH == bg_width) bg_width = bitmap_output_width(string, font) + 20;
+		glColor4f(0.3, 0.3, 0.6, 0.4);
+		glBegin(GL_QUADS);
+			glVertex2f(x, y + 30);
+			glVertex2f(x + bg_width, y + 30);
+			glVertex2f(x + bg_width, y);
+			glVertex2f(x, y);
+		glEnd();
 	}
-	//glPopMatrix();
-}
-
-void
-stroke_output(int x, int y, const char *format/*,...*/)
-{
-  /*va_list args;
-  char buffer[1024];
-  va_start(args, format);
-  vsprintf(buffer, format, args);
-  va_end(args);*/
+	glColor3f(1.0f, 1.0f, 0.1f);
+	bitmap_output(x + 10, y + 8, string);
 	
-	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	//glEnable(GL_BLEND);
-	//glEnable(GL_LINE_SMOOTH);
-	//glLineWidth(2.0);
-  
-  glTranslatef(x, y, 0);
-  //glScalef(0.005, 0.005, 0.005);
-  for (const char * p = format; *p; p++)
-    glutStrokeCharacter(GLUT_STROKE_ROMAN, *p);
+	glPopMatrix();
 }
 
-Menu::Menu(const Camera2d& camera, const int left, const int top)
-: camera(camera), _left(left), _top(top), last_mouse_over_btn_nr(-1) {
+Menu::Menu(const int left, const int top)
+: _left(left), _top(top), last_mouse_over_btn_nr(-1) {
 }
 
 Menu::~Menu()
@@ -42,8 +46,15 @@ Menu::~Menu()
 }
 
 int Menu::xy_to_btn(int x, int y) const {
-	if (y < top() || y > bottom() || x < left() || x >= right()) return -1;
-	return (x - left()) / btn_width;
+	if (y < top() || y > bottom()) return -1;
+	int btn_start = left();
+	for (unsigned i = 0; i < buttons.size(); ++i) {
+		if (x < btn_start) return -1;
+		btn_start += buttons[i]->length();
+		if (x < btn_start) return i;
+		btn_start += btn_pad;
+	}
+	return -1;
 }
 
 bool Menu::mouse_move_evt(int x, int y) {
@@ -73,20 +84,26 @@ void Menu::add(Button* button) {
 void Menu::draw() {
 	glPushMatrix();
 	glLoadIdentity();
-	gluOrtho2D(0.0, camera.w, 0.0, camera.h);
+	const double w = glutGet(GLUT_WINDOW_WIDTH), h = glutGet(GLUT_WINDOW_HEIGHT);
+	gluOrtho2D(0.0, w, 0.0, h);
 	
-	camera.normalLine();
+	int btn_start = left();
 	for (unsigned i = 0; i < buttons.size(); ++i) {
+		const int btn_width = buttons[i]->length();
+		const std::string& text = buttons[i]->text();
+		if (!text.empty()) {
 		glColor4f(0.3, 0.3, 0.6, 0.4);
 		glBegin(GL_QUADS);
-			glVertex2f(left() + i * btn_width + 1, camera.h - top());
-			glVertex2f(left() + (i+1) * btn_width - 1, camera.h - top());
-			glVertex2f(left() + (i+1) * btn_width - 1, camera.h - bottom());
-			glVertex2f(left() + i * btn_width + 1, camera.h - bottom());
+			glVertex2f(btn_start, h - top());
+			glVertex2f(btn_start + btn_width, h - top());
+			glVertex2f(btn_start + btn_width, h - bottom());
+			glVertex2f(btn_start, h - bottom());
 		glEnd();
 		glColor3f(1.0f, 1.0f, 0.1f);
 		//bitmap_output(left() + i * btn_width, top(), buttons[i]->text);
-		bitmap_output(left() + i * btn_width + 10, camera.h - bottom() + 8, buttons[i]->text);
+		bitmap_output(btn_start + 10, h - bottom() + 8, text);
+		}
+		btn_start += btn_width + btn_pad;
 	}
 	glPopMatrix();
 }

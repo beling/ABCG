@@ -223,6 +223,7 @@ void World::clear() {
 }    
 
 std::istream& operator>>(std::istream& in, World &w) {
+	in >> w.money_limit;
     in >> w.terrain;
     double x0, y0, x1, y1;
     int len;
@@ -240,6 +241,7 @@ std::istream& operator>>(std::istream& in, World &w) {
 }
 
 std::ostream& operator<<(std::ostream& out, World &w) {
+	out << w.money_limit << std::endl;
     out << w.terrain << std::endl << w.links.size() << std::endl;
     for (std::list<Link>::iterator i = w.links_all.begin(); i != w.links_all.end(); i++)
         out << ' ' << i->A.pos_0.x << ' ' << i->A.pos_0.y << ' '

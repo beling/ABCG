@@ -20,6 +20,10 @@ class Episode {
 	
 	int levels_len() const { return levels.size(); }
 	
+	bool operator<(const Episode& other) const {
+		return name < other.name;
+	}
+	
 };
 
 class LevelsProvider {

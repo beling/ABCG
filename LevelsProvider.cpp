@@ -2,6 +2,8 @@
 
 #include "libs/osdir.h"
 
+#include <algorithm>
+
 #ifndef LEVELS_DIRECORY
 #define LEVELS_DIRECORY "." PATH_SEPARATOR "levels"
 #endif
@@ -24,7 +26,10 @@ void LevelsProvider::scan() {
 			}
 			current->levels.push_back(level_name);
 		}
+		if (current) //was 1 or more level
+			std::sort(current->levels.begin(), current->levels.end());
 	}
+	std::sort(episodes.begin(), episodes.end());
 }
 
 LevelsProvider::LevelsProvider()

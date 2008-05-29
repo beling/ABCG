@@ -43,21 +43,13 @@ struct vec2d {
     	y += dy;
     }
     
-    vec2d<T> operator+(const vec2d<T>& to_add) const {
-    	return vec2d<T>(x + to_add.x, y + to_add.y);
-    }
+    vec2d<T> operator+(const vec2d<T>& to_add) const { return vec2d<T>(x + to_add.x, y + to_add.y);  }
     
-    vec2d<T> operator-(const vec2d<T>& to_sub) const {
-    	return vec2d<T>(x - to_sub.x, y - to_sub.y);
-    }
+    vec2d<T> operator-(const vec2d<T>& to_sub) const { return vec2d<T>(x - to_sub.x, y - to_sub.y);  }
     
-    vec2d<T> operator*(const T& scale) const {
-    	return vec2d<T>(x * scale, y * scale);
-    }
+    vec2d<T> operator*(const T& scale) const { return vec2d<T>(x * scale, y * scale);  }
     
-    vec2d<T> operator/(const T& scalei) const {
-    	return vec2d<T>(x / scalei, y / scalei);
-    }
+    vec2d<T> operator/(const T& scalei) const { return vec2d<T>(x / scalei, y / scalei);  }
     
 };
 

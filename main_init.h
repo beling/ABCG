@@ -77,6 +77,7 @@ void init_menu() {
 	menu.add_fun("<", prev_level);
 	menu.add_glut_menu("level", read_level_menu());
 	menu.add_fun(">", next_level);
+	menu.add_space();
 	//menu.add_space();	
 	menu.add_fun("grid on/off", grid_on_off);
 	menu.add_space(40);	

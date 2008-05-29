@@ -126,7 +126,7 @@ public:
 	
 	void add_text(const std::string& text) { add(new TextButton(text)); }
 	
-	void add_space(const unsigned width = 20) { add(new Space(width)); }
+	void add_space(const unsigned width = 10) { add(new Space(width)); }
 	
 	void draw();
 };

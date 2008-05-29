@@ -93,16 +93,12 @@ void display () {   // Create The Display Function
 void phisicalStep() {
     if (mode != m_anim) return;
     static const unsigned physicalIterationPerStep = 1000;
-    //double t = bound(timer.intervalSec() / physicalIterationPerStep, 0.00001, 0.00005);
-    //double t = bound(timer.intervalSec() / physicalIterationPerStep, 0.0001 / physicalIterationPerStep, 0.03 / physicalIterationPerStep);
-    //std::cout << t << " ";
-    //if (t < 0.00003) t = 0.00003;	//minimum
-    //if (t > 0.00003) t = 0.00003;	//maximum
-    //const double t = 0.015 / physicalIterationPerStep;
-    //const double t = 0.000000000000003 / physicalIterationPerStep;
     for (unsigned i = physicalIterationPerStep; i > 0; --i)
         world.go();   
-    //TODO! zrobiæ coœ by mo¿na by³o ró¿niczkowaæ po zmiennych kawa³kach czasu
+    if (world.is_level_complited()) {
+    	//level complated!!
+    	mode = m_pause;
+    }
     glutPostRedisplay();
 }
 

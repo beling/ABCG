@@ -37,9 +37,29 @@ LevelsProvider::LevelsProvider()
 	scan();
 }
 
+bool LevelsProvider::level_exist(int episode_nr, int level_nr) const {
+	return episode_nr >= 0 && level_nr >= 0 &&
+		   episode_nr < episodes_len() &&
+		   level_nr < episode(episode_nr).levels_len();
+	
+}
+
 std::string LevelsProvider::file_name(int episode_nr, int level_nr) const {
 	return std::string(LEVELS_DIRECORY) + PATH_SEPARATOR +
 		   episode(episode_nr).name + PATH_SEPARATOR +
 		   episode(episode_nr).level(level_nr);
 }
+
+int LevelsProvider::next_level_id(int episode_nr, int level_nr) const {
+	if (level_exist(episode_nr, level_nr + 1)) return id(episode_nr, level_nr + 1);
+	if (level_exist(episode_nr+1, 0)) return id(episode_nr+1, 0);
+	return id(0, 0);
+}
+
+int LevelsProvider::prev_level_id(int episode_nr, int level_nr) const {
+	if (level_exist(episode_nr, level_nr - 1)) return id(episode_nr, level_nr - 1);
+	if (episode_nr > 0) return id(episode_nr-1, episode(episode_nr-1).levels_len()-1);
+	return id(episodes_len()-1, episode(episodes_len()-1).levels_len()-1);
+}
+
 

@@ -18,14 +18,31 @@ LevelsProvider levels;
 ///Czy rysowaæ siatkê w trybie edycji?
 bool grid = true;
 
+int current_level_id = 0;
+
 enum Mode {
 	m_anim, m_pause, m_edit //czy jesteœmy w trybie: 0-animacji, 1-znimacji (pause), 2-edycji
 } mode = m_edit;
 
+void refresh_world() {
+	glutPostRedisplay();
+}
+
 void level_choose(int value) {
+	current_level_id = value;
     std::ifstream f(levels.file_name(value).c_str());
     f >> world;
     f.close();
+}
+
+void next_level() {
+	level_choose(levels.next_level_id(current_level_id));
+	refresh_world();
+}
+
+void prev_level() {
+	level_choose(levels.prev_level_id(current_level_id));
+	refresh_world();
 }
 
 int read_level_menu() {
@@ -57,7 +74,10 @@ struct MoneyText: public Button {
 } money_text;
 
 void init_menu() {
+	menu.add_fun("<", prev_level);
 	menu.add_glut_menu("level", read_level_menu());
+	menu.add_fun(">", next_level);
+	//menu.add_space();	
 	menu.add_fun("grid on/off", grid_on_off);
 	menu.add_space(40);	
 	menu.add(&money_text);

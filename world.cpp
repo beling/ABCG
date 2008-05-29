@@ -259,3 +259,10 @@ double World::money_left() const {
 		sum += link_prize(i->length);
 	return money_limit - sum;
 }
+
+bool World::is_level_complited() const {
+	const double terrain_end = terrain.toX() + 10;	//10 meters after terrain end
+	return
+		train.wagons.back().leftDown.pos.x > terrain_end &&
+		train.wagons.front().leftDown.pos.x > terrain_end;
+}

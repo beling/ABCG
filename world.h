@@ -134,6 +134,8 @@ class World {
 	    double money_left() const;
 	    
 	    bool has_money_for(double len) { return money_left() >= link_prize(len); }
+	    
+	    bool is_level_complited() const;
 		
 };
 

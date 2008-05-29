@@ -105,15 +105,15 @@ class Terrain
 		//void createHole(double height1, double height2, unsigned start, unsigned steps);
 		
 		///Rysuje teren
-		void draw(const Camera2d& c);
+		void draw(const Camera2d& c) const;
 		
 		///@return gdzie sie zaczyna wg³êbienie
-		double fromX() {
+		double fromX() const {
 		  return -step;
 		}
 		
 		///@return gdzie sie koñczy wg³êbienie
-		double toX() {
+		double toX() const {
 		  return heights.size() * step;
 		}
 		

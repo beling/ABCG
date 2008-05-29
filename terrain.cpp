@@ -50,7 +50,7 @@ inline void terrainVertex(double x, double y) {
 }
 
 //TODO: skompilowaæ i u¿ywaæ list openGL
-void Terrain::draw(const Camera2d& c) {
+void Terrain::draw(const Camera2d& c) const {
     double b = c.realBottom();
     if (b > 0.0) return; //kamera patrzy za wysoko
     if (b > _lowest) b = _lowest - 1.0;

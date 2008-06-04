@@ -53,8 +53,8 @@ class Link
             Konstruuje belke o koñcach A, B, gêstoœci massden, przekroju 1.0, której
             wsp. sprê¿ystoœci (modu³ Younga) resilence
 		*/
-		//gêstoœæ stali to 7850.0, 1/900.0 to przekrój w m^2, 2.19 to modu³ Younga stali
-		Link(Node &A, Node &B, const double massden = 7500.0 / 400.0, const double resilence = 2.19E11 / 400.0, const double maxDeltaLength = 0.02);
+		//gêstoœæ stali to 7850.0, 1/300.0 to przekrój w m^2, 2.19 to modu³ Younga stali
+		Link(Node &A, Node &B, const double massden = 7850.0 / 300.0, const double resilence = 2.19E11 / 300.0, const double maxDeltaLength = 0.015);
         
         //Link(const Link& toCopy);
         

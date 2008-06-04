@@ -97,7 +97,7 @@ void phisicalStep() {
         world.go();   
     if (world.is_level_complited()) {
     	//level complated!!
-    	mode = m_pause;
+    	//mode = m_pause;
     }
     glutPostRedisplay();
 }

@@ -6,8 +6,6 @@
 
 #include <GL/glut.h>
 
-#include "camera2d.h"
-
 void bitmap_output(int x, int y, const std::string& string, void *font = GLUT_BITMAP_HELVETICA_18);
 unsigned bitmap_output_width(const std::string& string, void *font = GLUT_BITMAP_HELVETICA_18);
 //void stroke_output(int x, int y, const char *format);

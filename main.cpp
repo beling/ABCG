@@ -13,8 +13,6 @@
 
 #include "main_init.h"
 
-vec2d<double> linkStart(NAN, NAN), linkEnd(NAN, NAN); //jeœli rysujemy link to wyznacza jego wsp.
-
 const double gridStep = 5.0;
 
 bool fullScreen; //okreœla czy tryb pe³noekranowy
@@ -35,14 +33,14 @@ double snapToGrid(double sth) {
 
 void init() {    // Create Some Everyday Functions
 	glDisable(GL_DEPTH_TEST);
-	
+
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
 	//glEnable(GL_LINE_SMOOTH);
 	//glLineWidth(2.0);
-	
-	//glShadeModel(GL_SMOOTH);// Enable Smooth Shading	
-    //glColor4f(1.0f,1.0f,1.0f,0.5f); 			
+
+	//glShadeModel(GL_SMOOTH);// Enable Smooth Shading
+    //glColor4f(1.0f,1.0f,1.0f,0.5f);
     //glBlendFunc(GL_SRC_ALPHA,GL_ONE);
     //glDisable(GL_DEPTH_TEST);
     //glEnable(GL_BLEND);
@@ -60,7 +58,7 @@ void display () {   // Create The Display Function
     if (grid) {
 	    glColor4f(0.0f, 0.0f, 0.0f, 0.1f);
 	    double l(camera.realLeft()), r(camera.realRight()), t(camera.realTop()), d(camera.realBottom());
-	    glBegin(GL_LINES); 
+	    glBegin(GL_LINES);
 	      for (double x = snapToGrid(l); x <= r; x += gridStep) {
 	            glVertex2d(x, t);
 	            glVertex2d(x, d);
@@ -78,7 +76,7 @@ void display () {   // Create The Display Function
     	else
     		glColor4f(0.8f, 0.5f, 0.5f, 0.9f);
         camera.zoomedLine();
-        glBegin(GL_LINES);      
+        glBegin(GL_LINES);
           glVertex2d(linkStart.x, linkStart.y);
           glVertex2d(linkEnd.x, linkEnd.y);
         glEnd();
@@ -94,7 +92,7 @@ void phisicalStep() {
     if (mode != m_anim) return;
     static const unsigned physicalIterationPerStep = 1000;
     for (unsigned i = physicalIterationPerStep; i > 0; --i)
-        world.go();   
+        world.go();
     if (world.is_level_complited()) {
     	//level complated!!
     	//mode = m_pause;
@@ -119,16 +117,8 @@ void keyboard(unsigned char key, int x, int y) {  // Create Keyboard Function
       glutPostRedisplay();
       break;
     case 32:    //start/stop animacji
-      linkStart.x = NAN; //anulujemy rysowanie linka
-      if (mode == m_edit) {
-            world.start();      
-            mode = m_anim;     
-      } else {
-            mode = m_edit;
-            world.stop();
-            glutPostRedisplay();
-      }
-      break;
+    	start_stop_simulation();
+    	break;
     /*case 's':
       if (mode == m_edit) fileSave();
       break;
@@ -138,23 +128,25 @@ void keyboard(unsigned char key, int x, int y) {  // Create Keyboard Function
       glutPostRedisplay();
       break;*/
     case 'c': //czyœci œwiat
-      if (mode != m_edit) return;
-      world.clear();
-      glutPostRedisplay();
-      break;
+    	clear();
+    	break;
     case 'p':    //pause
         if (mode == m_pause)
               mode = m_anim;
         else if (mode == m_anim)
-              mode = m_pause;  
+              mode = m_pause;
         break;
-    case 13:     //ENTER   
+    case 13:     //ENTER
         if (!(glutGetModifiers() & GLUT_ACTIVE_ALT)) break; //bez alt-a
     case 'w':    //pe³ny ekran/okno
     case 'f':
         setFullScreen(!fullScreen);
-      break;  
+      break;
     case 27:        // When Escape Is Pressed...
+    	if (mode != m_edit) {
+    		start_stop_simulation();
+    		break;
+    	}
     case 'q':
     	just_exit();   // Exit The Program
     	break;        // Ready For Next Case
@@ -237,12 +229,12 @@ int main (int argc, char** argv)   // Create Main Function For Bringing It All T
   glutMouseFunc(mouse);
   glutPassiveMotionFunc(pasiveMouse);
   glutMotionFunc(pasiveMouse);
-  
+
   //fileName = argc > 1 ? argv[1] : NULL;
   init();
-  
+
   init_menu();
-  
+
   glutMainLoop();          // Initialize The Main Loop
   return 0;
 }

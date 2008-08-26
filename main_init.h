@@ -24,6 +24,8 @@ enum Mode {
 	m_anim, m_pause, m_edit //czy jesteœmy w trybie: 0-animacji, 1-znimacji (pause), 2-edycji
 } mode = m_edit;
 
+vec2d<double> linkStart(NAN, NAN), linkEnd(NAN, NAN); //jeœli rysujemy link to wyznacza jego wsp.
+
 void refresh_world() {
 	glutPostRedisplay();
 }
@@ -65,12 +67,30 @@ void grid_on_off() {
 	glutPostRedisplay();
 }
 
+void clear() {
+    if (mode != m_edit) return;
+    world.clear();
+    glutPostRedisplay();
+}
+
+void start_stop_simulation() {
+    linkStart.x = NAN; //anulujemy rysowanie linka
+    if (mode == m_edit) {
+          world.start();
+          mode = m_anim;
+    } else {
+          mode = m_edit;
+          world.stop();
+          glutPostRedisplay();
+    }
+}
+
 struct MoneyText: public Button {
-	
+
 	virtual std::string text() const { std::stringstream s; s << "$" << world.money_left(); return s.str(); }
-	
+
 	virtual int length() const { return 120; };
-	
+
 } money_text;
 
 void init_menu() {
@@ -78,11 +98,12 @@ void init_menu() {
 	menu.add_glut_menu("level", read_level_menu());
 	menu.add_fun(">", next_level);
 	menu.add_space();
-	//menu.add_space();	
 	menu.add_fun("grid on/off", grid_on_off);
-	menu.add_space(40);	
+	menu.add_space(30);
+	menu.add_fun("start", start_stop_simulation);
 	menu.add(&money_text);
-	menu.add_space(40);
+	menu.add_space(30);
+	menu.add_fun("clear", clear);
 	menu.add_fun("exit", just_exit);
 }
 

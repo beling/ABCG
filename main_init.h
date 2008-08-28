@@ -37,6 +37,16 @@ void level_choose(int value) {
     f.close();
 }
 
+void load_current_level() {
+	level_choose(current_level_id);
+}
+
+void save_current_level() {
+	std::ofstream f(levels.file_name(current_level_id).c_str());
+	f << world;
+	f.close();
+}
+
 void next_level() {
 	level_choose(levels.next_level_id(current_level_id));
 	refresh_world();
@@ -103,6 +113,7 @@ void init_menu() {
 	menu.add_fun("start", start_stop_simulation);
 	menu.add(&money_text);
 	menu.add_space(30);
+	menu.add_fun("save", save_current_level);
 	menu.add_fun("clear", clear);
 	menu.add_fun("exit", just_exit);
 }

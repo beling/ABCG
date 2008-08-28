@@ -11,7 +11,7 @@
 #include "libs/utils.h"
 #include "LevelsProvider.h"
 
-#include "main_init.h"
+#include "main_init.h"	//most logic is in this file
 
 //#ifdef _WIN32
 //#define WIN32_EXTRALEAN // Only include the basics
@@ -29,7 +29,7 @@ void setFullScreen(bool doFullScreen = true) {
     if (doFullScreen == fullScreen) return;
     if (doFullScreen) glutFullScreen();
     else {
-        glutReshapeWindow(500, 400); // Go Into A 500 By 500 Window
+        glutReshapeWindow(500, 400); // Go Into A 500 By 400 Window
         glutPositionWindow(50, 50);
     }
     fullScreen = doFullScreen;
@@ -128,14 +128,12 @@ void keyboard(unsigned char key, int x, int y) {  // Create Keyboard Function
     case 32:    //start/stop animacji
     	start_stop_simulation();
     	break;
-    /*case 's':
-      if (mode == m_edit) fileSave();
+    case 's':
+      if (mode == m_edit) save_current_level();
       break;
     case 'l':
-      if (mode != m_edit) return;
-      fileLoad();
-      glutPostRedisplay();
-      break;*/
+      if (mode == m_edit) load_current_level();
+      break;
     case 'c': //czyœci œwiat
     	clear();
     	break;
@@ -243,6 +241,8 @@ int main (int argc, char** argv)   // Create Main Function For Bringing It All T
   init();
 
   init_menu();
+
+  load_current_level();
 
   glutMainLoop();          // Initialize The Main Loop
   return 0;

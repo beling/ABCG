@@ -19,9 +19,9 @@ World::World()
 	terrain.heights.push_back(-61.0);
 	terrain.heights.push_back(-54.0);
 	terrain.heights.push_back(-44.0);
-	
+
 	money_limit = 20000.0;
-	
+
 	stop();
 }
 
@@ -36,7 +36,7 @@ void World::draw_sky(const Camera2d& c) {
     	glColor3f(0.87f, 0.77f, 0.6f);
     	glVertex2d(r, 0);
     	glVertex2d(l, 0);
-    	
+
     	glColor3f(0.4f, 0.67f, 0.96f);
     	glVertex2d(r, - 300);
     	glVertex2d(l, - 300);
@@ -56,7 +56,7 @@ void World::draw_water(const Camera2d& c) {
     glBegin(GL_POLYGON);
     	//const double l = c.realLeft(), r = c.realRight();
     	glVertex2d(l, b);
-    	
+
     	const int framents_num = 30;
     	const double fraglen = ((c.realRight() - c.realLeft()) / framents_num);
     	for (int i = 0; i <= framents_num; ++i) {
@@ -74,11 +74,11 @@ void World::draw(const Camera2d& c) {
 //	   i->draw();
 	for (std::list<Link>::iterator i = links.begin(); i != links.end(); i++)
 	   i->draw();
-	glColor3f(0.8, 0.5, 0.5);   
-	for (std::list<Node>::iterator i = nodes.begin(); i != nodes.end(); i++)  
-       i->draw(); 
+	glColor3f(0.8, 0.5, 0.5);
+	for (std::list<Node>::iterator i = nodes.begin(); i != nodes.end(); i++)
+       i->draw();
     glColor3f(0.7, 0.2, 0.3);
-	for (std::list<Node*>::iterator i = unactive_nodes.begin(); i != unactive_nodes.end(); i++)  
+	for (std::list<Node*>::iterator i = unactive_nodes.begin(); i != unactive_nodes.end(); i++)
        (*i)->draw();
 	draw_water(c);
 	terrain.draw(c);
@@ -87,7 +87,7 @@ void World::draw(const Camera2d& c) {
 void World::go() {
     time += timeStep;
     //for (std::list<Node>::iterator i = nodes.begin(); i != nodes.end(); i++)
-    //    i->forceX = i->forceY = 0.0;        //zeruje si³y    
+    //    i->forceX = i->forceY = 0.0;        //zeruje si³y
 	for (std::list<Link>::iterator i = links.begin(); i != links.end(); i++)
         i->calcForces();                    //dodaje si³y od belek
     for (std::list<Node>::iterator i = nodes.begin(); i != nodes.end(); i++) {
@@ -108,7 +108,7 @@ void World::go() {
          i = links.erase(i);
          //TODO tu mo¿na by pozbyæ siê z niczym nie po³¹czonych wêz³ów
       } else ++i;         //usówa zerwane ³acza
-} 
+}
 
 void World::start() {
    	stop();
@@ -116,24 +116,24 @@ void World::start() {
     for (std::list<Link>::iterator i = links.begin(); i != links.end(); i++) {
         i->A.mass += i->mass / 2.0;
         i->B.mass += i->mass / 2.0;
-    }    
+    }
 }
 
 void World::stop() {
     time = 0.0;
 	//kopiujemy link do g³ównej listy
     clone_links_list();
-    
+
     for (std::list<Node>::iterator i = nodes.begin(); i != nodes.end(); i++)
-   	    i->reset();  //resetuje wêz³y 
-   	
+   	    i->reset();  //resetuje wêz³y
+
    	bridge.clear();
    	for (std::list<Link>::iterator i = links.begin(); i != links.end(); i++) {
    	    i->reset();
    	    if (i->A.pos.y == 0.0 && i->B.pos.y == 0.0) //belka stanowi most
    	            bridge.push_back(&*i);
     }
-   	train.reset(); //resetuje pozycje poci¹gu	    
+   	train.reset(); //resetuje pozycje poci¹gu
 }
 
 std::list<Node>::iterator World::findNode(const double left, const double top, const double right, const double bottom) {
@@ -145,36 +145,36 @@ std::list<Node>::iterator World::findNode(const double x, const double y, const 
 }
 
 std::list<Node>::iterator World::addNode(const Node& toAdd) {
-    nodes.push_back(toAdd);   
+    nodes.push_back(toAdd);
     if (terrain.touch(toAdd.pos)) {
         unactive_nodes.push_back(&nodes.back());
         nodes.back().movable = false;
-    }    
-    return --nodes.end();   
+    }
+    return --nodes.end();
 }
 
 std::list<Link>::iterator World::addLink(const double x0, const double y0, const double x1, const double y1, const double prec) {
-	if (abs(x0 - x1) < prec && abs(y0 - y1) < prec) return links_all.end();
-	
+	if (fabs(x0 - x1) < prec && fabs(y0 - y1) < prec) return links_all.end();
+
 	std::list<Node>::iterator first = findNode(x0, y0, prec);
     std::list<Node>::iterator second = findNode(x1, y1, prec);
-    
+
     if (first != nodes.end() && second != nodes.end()) //jesli istnieje ju¿ link ³¹cz¹cy to wychodzimy
         for (std::list<Link>::iterator l = links.begin(); l != links.end(); l++)
             if (Link::IsEnd()(*l, *first) && Link::IsEnd()(*l, *second)) return l;
-            
+
     if (first == nodes.end())  //dodaje wêze³ jeœli potrzebny
-        first = addNode(Node(x0, y0, 500.0));   
-        
+        first = addNode(Node(x0, y0, 500.0));
+
     if (second == nodes.end()) //dodaje wêze³ jeœli potrzebny
-        second = addNode(Node(x1, y1, 500.0));  
-    
+        second = addNode(Node(x1, y1, 500.0));
+
     if (first->pos.x > second->pos.x) //sortujemy po wspó³rzêdnej x
         links_all.push_back(Link(*second, *first));
     else
     	links_all.push_back(Link(*first, *second));//Dodaje nowe ³¹cze
     links.push_back(links_all.back());
-        
+
     return --links_all.end();
 };
 
@@ -185,7 +185,7 @@ bool World::addLinkIfHaveMonay(const double x0, const double y0, const double x1
 	} else
 		return false;
 }
-         
+
 
 void World::clone_links_list() {
 	links.clear();
@@ -195,8 +195,8 @@ void World::clone_links_list() {
 void World::delAt(const double x, const double y, const double prec) {
     std::list<Node>::iterator node = findNode(x, y, prec);
     if (node == nodes.end()) {   //nie klikniêto na wie¿cho³ek. TODO: poszukaæ i usun¹æ link
-        return;    
-    }    
+        return;
+    }
     //usówamy wie¿cho³ek
     //najpierw wszystkie przyleg³e linki i ew. wie¿cho³ki stopnia 1
     for (std::list<Link>::iterator l = find_if(links_all.begin(), links_all.end(), std::bind2nd(Link::IsEnd(), *node));
@@ -206,7 +206,7 @@ void World::delAt(const double x, const double y, const double prec) {
              if (count_if(links_all.begin(), links_all.end(), std::bind2nd(Link::IsEnd(), toDel)) == 0) {
                   unactive_nodes.remove(&toDel);
                   nodes.remove(toDel);        //jest nieu¿ywany wiêc usówamy
-             }   
+             }
          }
     clone_links_list();
     unactive_nodes.remove(&*node);
@@ -220,7 +220,7 @@ void World::clear() {
     links.clear();
     unactive_nodes.clear();
     nodes.clear();
-}    
+}
 
 std::istream& operator>>(std::istream& in, World &w) {
 	in >> w.money_limit;
@@ -233,7 +233,7 @@ std::istream& operator>>(std::istream& in, World &w) {
         in >> x0;
         in >> y0;
         in >> x1;
-        in >> y1;        
+        in >> y1;
         w.addLink(x0, y0, x1, y1);
     }
     w.stop();

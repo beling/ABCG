@@ -13,9 +13,17 @@
 
 #include "main_init.h"
 
+#ifdef _WIN32
+#define WIN32_EXTRALEAN // Only include the basics
+#include <windows.h> // exit, virtual key codes
+#endif
+
+
 const double gridStep = 5.0;
 
 bool fullScreen; //okreœla czy tryb pe³noekranowy
+
+bool isnan(const double x) { return x != x; }
 
 void setFullScreen(bool doFullScreen = true) {
     if (doFullScreen == fullScreen) return;
@@ -36,6 +44,7 @@ void init() {    // Create Some Everyday Functions
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
+
 	//glEnable(GL_LINE_SMOOTH);
 	//glLineWidth(2.0);
 
@@ -50,7 +59,7 @@ void init() {    // Create Some Everyday Functions
 }
 
 void display () {   // Create The Display Function
-  glClear(GL_COLOR_BUFFER_BIT);	// Clear Screen And Depth Buffer
+  //glClear(GL_COLOR_BUFFER_BIT);	// Clear Screen And Depth Buffer
   camera.zoomedLine();
   world.draw(camera);
   if (mode == m_edit) {
@@ -217,7 +226,7 @@ void pasiveMouse(int x, int y) {
 int main (int argc, char** argv)   // Create Main Function For Bringing It All Together
 {
   glutInit(&argc, argv); // Erm Just Write It =)
-  glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE); // Display Mode
+  glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_ALPHA); // Display Mode
   glutInitWindowSize(500, 500); // If glutFullScreen wasn't called this is the window size
   glutCreateWindow("Another Bridge Construct Game (Piotr Beling)"); // Window Title
   //glutFullScreen();          // Put Into Full Screen

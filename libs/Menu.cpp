@@ -18,7 +18,7 @@ unsigned bitmap_output_width(const std::string& string, void *font) {
 void nice_output(int x, int y, const std::string& string, int bg_width, void *font) {
 	glPushMatrix();
 	glLoadIdentity();
-	const double h = glutGet(GLUT_WINDOW_HEIGHT);
+	const int h = glutGet(GLUT_WINDOW_HEIGHT);
 	gluOrtho2D(0.0, glutGet(GLUT_WINDOW_WIDTH), 0.0, h);
 	y = h - y;
 	if (BG_NONE != bg_width) {
@@ -33,7 +33,7 @@ void nice_output(int x, int y, const std::string& string, int bg_width, void *fo
 	}
 	glColor3f(1.0f, 1.0f, 0.1f);
 	bitmap_output(x + 10, y + 8, string);
-	
+
 	glPopMatrix();
 }
 
@@ -84,9 +84,9 @@ void Menu::add(Button* button) {
 void Menu::draw() {
 	glPushMatrix();
 	glLoadIdentity();
-	const double w = glutGet(GLUT_WINDOW_WIDTH), h = glutGet(GLUT_WINDOW_HEIGHT);
+	const int w = glutGet(GLUT_WINDOW_WIDTH), h = glutGet(GLUT_WINDOW_HEIGHT);
 	gluOrtho2D(0.0, w, 0.0, h);
-	
+
 	int btn_start = left();
 	for (unsigned i = 0; i < buttons.size(); ++i) {
 		const int btn_width = buttons[i]->length();
@@ -101,7 +101,7 @@ void Menu::draw() {
 		glEnd();
 		glColor3f(1.0f, 1.0f, 0.1f);
 		//bitmap_output(left() + i * btn_width, top(), buttons[i]->text);
-		bitmap_output(btn_start + 10, h - bottom() + 8, text);
+		bitmap_output(btn_start + 10, int(h) - bottom() + 8, text);
 		}
 		btn_start += btn_width + btn_pad;
 	}

@@ -22,14 +22,14 @@ void Train::addWagon(double width, double height, double downMass, double upMass
 void Train::reset() {
     for (std::list<Vicicle>::iterator i = wagons.begin(); i != wagons.end(); i++) {
         i->reset();
-        /*double max_delta_r = sqrt(max_delta_r_sqr); 
+        /*double max_delta_r = sqrt(max_delta_r_sqr);
         i->leftDown.prev_pos.x -= max_delta_r;
         i->rightDown.prev_pos.x -= max_delta_r;
         i->leftUp.prev_pos.x-= max_delta_r;
         i->rightUp.prev_pos.x -= max_delta_r; */       //nadaje ¿¹dan¹ prêdkoœæ
     }
     for (std::list<Link>::iterator i = links.begin(); i != links.end(); i++)
-        i->reset();    
+        i->reset();
 }
 
 void Train::draw() {
@@ -60,28 +60,28 @@ void Train::satisfyLineConstraints(Link& link) {
     //je¶li lokomotywa jedzie po szynach, mo¿na próbowaæ przyspieszaæ:
     if (i->satisfyLineConstraint(link, i->leftDown))
         speedUpIfNeed(i->leftDown, link.B.pos.x - link.A.pos.x, link.B.pos.y - link.A.pos.y, link.length);
-        
+
     if (i->satisfyLineConstraint(link, i->rightDown))
         speedUpIfNeed(i->rightDown, link.B.pos.x - link.A.pos.x, link.B.pos.y - link.A.pos.y, link.length);
-          
+
     for (i++; i != wagons.end(); i++)
         i->satisfyLineConstraints(link);
 }
 
 void Train::satisfyTerrainConstraints(Terrain& terrain) {
     std::list<Vicicle>::iterator i = wagons.begin();
-    
+
     //ew. przyspieszanie lokomotywy na prostej
     if (terrain.correctPoint(i->leftDown.pos.x, i->leftDown.pos.y) &&
         (i->leftDown.pos.x < terrain.fromX() || terrain.toX() < i->leftDown.pos.x))
         speedUpIfNeed(i->leftDown, terrain.step, 0.0, terrain.step);
-        
+
     if (terrain.correctPoint(i->rightDown.pos.x, i->rightDown.pos.y) &&
         (i->rightDown.pos.x < terrain.fromX() || terrain.toX() < i->rightDown.pos.x))
         speedUpIfNeed(i->rightDown, terrain.step, 0.0, terrain.step);
-    
-    terrain.correctPoint(i->leftUp.pos);      
-    terrain.correctPoint(i->rightUp.pos);    
+
+    terrain.correctPoint(i->leftUp.pos);
+    terrain.correctPoint(i->rightUp.pos);
 
     for (++i; i != wagons.end(); ++i)
         i->satisfyTerrainConstraints(terrain);

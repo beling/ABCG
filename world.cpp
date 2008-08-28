@@ -74,10 +74,10 @@ void World::draw(const Camera2d& c) {
 //	   i->draw();
 	for (std::list<Link>::iterator i = links.begin(); i != links.end(); i++)
 	   i->draw();
-	glColor3f(0.8, 0.5, 0.5);
+	glColor4f(0.8f, 0.5f, 0.5f, 1.0f);
 	for (std::list<Node>::iterator i = nodes.begin(); i != nodes.end(); i++)
        i->draw();
-    glColor3f(0.7, 0.2, 0.3);
+    glColor3f(0.7f, 0.2f, 0.3f);
 	for (std::list<Node*>::iterator i = unactive_nodes.begin(); i != unactive_nodes.end(); i++)
        (*i)->draw();
 	draw_water(c);

@@ -10,7 +10,7 @@ void Vicicle::initLengths() {
   //r = hypot(rightUp.x0 - rightDown.x0, rightUp.y0 - rightDown.y0);
   //dl = hypot(rightUp.x0 - leftDown.x0, rightUp.y0 - leftDown.y0);
   //ul = hypot(leftUp.x0 - rightDown.x0, leftUp.y0 - rightDown.y0);
-  
+
   d = rightDown.pos_0.distans(leftDown.pos_0);
   u = rightUp.pos_0.distans(leftUp.pos_0);
   l = leftUp.pos_0.distans(leftDown.pos_0);
@@ -58,7 +58,7 @@ void Vicicle::satisfyConstraints() {
 
 void Vicicle::satisfyTerrainConstraints(Terrain& terrain) {
     terrain.correctPoint(leftDown.pos);
-    terrain.correctPoint(rightDown.pos); 
+    terrain.correctPoint(rightDown.pos);
     terrain.correctPoint(leftUp.pos);
     terrain.correctPoint(rightUp.pos);
 }
@@ -79,12 +79,17 @@ void Vicicle::satisfyLineConstraints(Link& link) {
 }
 
 void Vicicle::draw() {
-    glColor3f(112.0f / 255.0f, 92.0f / 255.0f, 92.0f / 255.0f);
+    glColor4f(112.0f / 255.0f, 92.0f / 255.0f, 92.0f / 255.0f, 1.0f);
     glBegin(GL_QUADS);
-        glVertex2d(leftDown.pos.x, leftDown.pos.y); 
         glVertex2d(leftUp.pos.x, leftUp.pos.y);
         glVertex2d(rightUp.pos.x, rightUp.pos.y);
-        glVertex2d(rightDown.pos.x, rightDown.pos.y);  
+        glVertex2d(rightDown.pos.x, rightDown.pos.y);
+        glVertex2d(leftDown.pos.x, leftDown.pos.y);
+
+		/*glVertex2d(leftDown.pos.x, leftDown.pos.y);
+		glVertex2d(rightDown.pos.x, rightDown.pos.y);
+		glVertex2d(rightUp.pos.x, rightUp.pos.y);
+		glVertex2d(leftUp.pos.x, leftUp.pos.y);*/
     glEnd();
 }
 

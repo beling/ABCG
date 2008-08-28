@@ -31,7 +31,7 @@ Terrain::~Terrain()
         heights[start + steps/2] += height;
 };*/ //BUG??
 
-//void Terrain::createHole(double height, double weight, unsigned start, unsigned steps) {  
+//void Terrain::createHole(double height, double weight, unsigned start, unsigned steps) {
 //}
 
 bool Terrain::touch(const double& x, const double& y) const {
@@ -41,8 +41,8 @@ bool Terrain::touch(const double& x, const double& y) const {
     //return (step * (y - y0) <= (x - (step * i)) * ((*this)[i+1] - y0));
 }
 
-//void drawTerrainPoint(double x, double y) {   
-//}    
+//void drawTerrainPoint(double x, double y) {
+//}
 
 inline void terrainVertex(double x, double y) {
 	glColor4f(0.1f, std::max(y/200.0+0.9, 0.2), 0.1f, 0.9f);
@@ -56,12 +56,12 @@ void Terrain::draw(const Camera2d& c) const {
     if (b > _lowest) b = _lowest - 1.0;
     double l = fmin(c.realLeft(), -step);
     double r = fmax(c.realRight(), toX()+step);
-    //glColor3f(0.0f, 0.7, 0.0f);//<-TODO: Color calc.
+    //glColor4f(0.0f, 0.7, 0.0f, 1.0f);//<-TODO: Color calc.
     glBegin(GL_QUAD_STRIP);
     	terrainVertex(l, b);
     	terrainVertex(l, 0.0);
     	terrainVertex(-step, b);
-    	terrainVertex(-step, 0.0);        
+    	terrainVertex(-step, 0.0);
         double x = 0.0;
         for (unsigned i = 0; i < heights.size(); i++) {
         	terrainVertex(x, b);
@@ -69,7 +69,7 @@ void Terrain::draw(const Camera2d& c) const {
             x += step;
         }
         terrainVertex(x, b);
-        terrainVertex(x, 0.0); 
+        terrainVertex(x, 0.0);
         terrainVertex(r, b);
         terrainVertex(r, 0.0);
     glEnd();
@@ -93,6 +93,6 @@ std::ostream& operator<<(std::ostream& out, Terrain &t) {
     out << t.step << ' ' << t.heights.size() << std::endl;
     for (std::vector<double>::iterator i = t.heights.begin(); i != t.heights.end(); i++)
         out << ' ' << *i;
-    out << std::endl;    
+    out << std::endl;
     return out;
 }

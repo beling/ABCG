@@ -13,17 +13,17 @@
 
 #include "main_init.h"
 
-#ifdef _WIN32
-#define WIN32_EXTRALEAN // Only include the basics
-#include <windows.h> // exit, virtual key codes
-#endif
+//#ifdef _WIN32
+//#define WIN32_EXTRALEAN // Only include the basics
+//#include <windows.h> // exit, virtual key codes
+//#endif
 
 
 const double gridStep = 5.0;
 
 bool fullScreen; //okreœla czy tryb pe³noekranowy
 
-bool isnan(const double x) { return x != x; }
+//bool isnan(const double x) { return x != x; }
 
 void setFullScreen(bool doFullScreen = true) {
     if (doFullScreen == fullScreen) return;
@@ -78,7 +78,7 @@ void display () {   // Create The Display Function
 	      }
 	    glEnd();
     }
-    if (!isnan(linkStart.x) && !isnan(linkEnd.x)) {
+    if (!std::isnan(linkStart.x) && !std::isnan(linkEnd.x)) {
     	const double link_len = linkStart.distans(linkEnd);
     	if (world.has_money_for(link_len))
     		glColor4f(0.5f, 0.8f, 0.5f, 0.9f);
@@ -195,14 +195,14 @@ void mouse(int button, int state, int x, int y) {
     if (mode != m_edit) return;
     vec2d<double> real(snapToGrid(camera.realX(x)), snapToGrid(camera.realY(y)));
     if (button == GLUT_LEFT_BUTTON) {
-        if (!isnan(linkStart.x)) { //koñczymy rysowaæ link
+        if (!std::isnan(linkStart.x)) { //koñczymy rysowaæ link
         	if (world.addLinkIfHaveMonay(linkStart.x, linkStart.y, real.x, real.y, gridStep / 4.0))
         		linkStart = real;
         } else
         	linkStart = real;
     }
     if (button == GLUT_RIGHT_BUTTON) {
-        if (isnan(linkStart.x)) //usówamy link
+        if (std::isnan(linkStart.x)) //usówamy link
             world.delAt(real.x, real.y);
         else                    //anulujemy rysowanie linka
             linkStart.x = linkEnd.x = NAN;
@@ -211,7 +211,7 @@ void mouse(int button, int state, int x, int y) {
 }
 
 void pasiveMouse(int x, int y) {
-    if (isnan(linkStart.x)) {	//nothing draw now
+    if (std::isnan(linkStart.x)) {	//nothing draw now
     	if (mode == m_edit) menu.mouse_move_evt(x, y); //try menu
     	return;
     }

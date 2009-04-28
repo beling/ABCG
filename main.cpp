@@ -21,7 +21,7 @@
 
 const double gridStep = 5.0;
 
-bool fullScreen; //okreœla czy tryb pe³noekranowy
+bool fullScreen; //okreï¿½la czy tryb peï¿½noekranowy
 
 //bool isnan(const double x) { return x != x; }
 
@@ -44,6 +44,8 @@ void init() {    // Create Some Everyday Functions
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
+
+	//glDisable(GL_DITHER);
 
 	//glEnable(GL_LINE_SMOOTH);
 	//glLineWidth(2.0);
@@ -134,7 +136,7 @@ void keyboard(unsigned char key, int x, int y) {  // Create Keyboard Function
     case 'l':
       if (mode == m_edit) load_current_level();
       break;
-    case 'c': //czyœci œwiat
+    case 'c': //czyï¿½ci ï¿½wiat
     	clear();
     	break;
     case 'p':    //pause
@@ -145,7 +147,7 @@ void keyboard(unsigned char key, int x, int y) {  // Create Keyboard Function
         break;
     case 13:     //ENTER
         if (!(glutGetModifiers() & GLUT_ACTIVE_ALT)) break; //bez alt-a
-    case 'w':    //pe³ny ekran/okno
+    case 'w':    //peï¿½ny ekran/okno
     case 'f':
         setFullScreen(!fullScreen);
       break;
@@ -193,14 +195,14 @@ void mouse(int button, int state, int x, int y) {
     if (mode != m_edit) return;
     vec2d<double> real(snapToGrid(camera.realX(x)), snapToGrid(camera.realY(y)));
     if (button == GLUT_LEFT_BUTTON) {
-        if (!std::isnan(linkStart.x)) { //koñczymy rysowaæ link
+        if (!std::isnan(linkStart.x)) { //koï¿½czymy rysowaï¿½ link
         	if (world.addLinkIfHaveMonay(linkStart.x, linkStart.y, real.x, real.y, gridStep / 4.0))
         		linkStart = real;
         } else
         	linkStart = real;
     }
     if (button == GLUT_RIGHT_BUTTON) {
-        if (std::isnan(linkStart.x)) //usówamy link
+        if (std::isnan(linkStart.x)) //usï¿½wamy link
             world.delAt(real.x, real.y);
         else                    //anulujemy rysowanie linka
             linkStart.x = linkEnd.x = NAN;

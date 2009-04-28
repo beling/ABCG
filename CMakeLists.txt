@@ -3,7 +3,7 @@ project (ABCGame)
 
 #include_directories (${ABCG_SOURCE_DIR}/libs)
 
-file(GLOB sources_files ${CMAKE_CURRENT_BINARY_DIR}/*.cpp ${CMAKE_CURRENT_BINARY_DIR}/libs/*.cpp)
+file(GLOB sources_files *.cpp libs/*.cpp *.h libs/*.h)
 
 find_package(GLUT REQUIRED)
 include_directories(${GLUT_INCLUDE_DIRS})

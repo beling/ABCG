@@ -14,12 +14,12 @@ void LevelsProvider::scan() {
 	oslink::directory epis(LEVELS_DIRECORY);
 	while (epis) {
 		std::string episode_name = epis.next();
-		if (episode_name == "." || episode_name == "..") continue;
+		if (episode_name.empty() || episode_name[0] == '.') continue;
 		oslink::directory level(std::string(LEVELS_DIRECORY) + PATH_SEPARATOR + episode_name);
 		current = 0;
 		while (level) {
 			std::string level_name = level.next();
-			if (level_name == "." || level_name == "..") continue;
+			if (level_name.empty() || level_name[0] == '.') continue;
 			if (!current) {
 				episodes.push_back(Episode(episode_name));
 				current = &episodes.back();

@@ -1,9 +1,30 @@
+/*
+    ABCG (Another Bridge Construct Game)
+    Copyright (C) 2010  Piotr Beling
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #ifndef LEVELSPROVIDER_H_
 #define LEVELSPROVIDER_H_
 
 #include <string>
 #include <vector>
 
+/**
+ * Represent episode, which is named vector of levels.
+ */
 class Episode {
 	
 	public:
@@ -26,6 +47,11 @@ class Episode {
 	
 };
 
+/**
+ * Provides access to levels. Allow reading them from files.
+ * Scan LEVELS_DIRECORY for episodes (subdirectories), and each episode directory for levels (files)
+ * LEVELS_DIRECORY should be defined as symbol, or it will be have default value: "." PATH_SEPARATOR "levels"
+ */
 class LevelsProvider {
 	
 	std::vector<Episode> episodes;

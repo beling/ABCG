@@ -1,5 +1,5 @@
 Another Bridge Construct Game
-http://qwak.w8.pl/index.php?topic=abcg
+http://qwak.w8.pl/project:abcg
 Piotr Beling
 
 1. English instruction

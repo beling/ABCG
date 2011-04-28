@@ -48,6 +48,10 @@ enum Mode {
 
 vec2d<double> linkStart(NAN, NAN), linkEnd(NAN, NAN); //jeœli rysujemy link to wyznacza jego wsp.
 
+void camera_changed() {
+	soundProvider().updateListenerPosition(vec2d<double>(camera.x, camera.y));
+}
+
 void refresh_world() {
 	glutPostRedisplay();
 }

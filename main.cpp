@@ -20,6 +20,8 @@
 #include <GL/gl.h>     // The GL Header File
 #include <GL/glut.h>   // The GL Utility Toolkit (Glut) Header
 
+#include "SoundProvider.h"
+
 #include <fstream>
 #include "world.h"
 #include "libs/utils.h"
@@ -54,6 +56,11 @@ double snapToGrid(double sth) {
 }
 
 void init() {    // Create Some Everyday Functions
+	srand(time(0));
+
+	initSoundProvider();
+	camera_changed();
+
 	glDisable(GL_DEPTH_TEST);
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -114,6 +121,7 @@ void display () {   // Create The Display Function
 }
 
 void phisicalStep() {
+	soundProvider().timerEvent(0.1);
     if (mode != m_anim) return;
     static const unsigned physicalIterationPerStep = 1000;
     for (unsigned i = physicalIterationPerStep; i > 0; --i)
@@ -197,6 +205,7 @@ void arrow_keys(int a_keys, int x, int y)  // Create Special Function (required 
       glutPostRedisplay();
       break;
   }
+  camera_changed();
 }
 
 void mouse(int button, int state, int x, int y) {
@@ -204,6 +213,7 @@ void mouse(int button, int state, int x, int y) {
     if (state != GLUT_UP) return;
     if (button == GLUT_MIDDLE_BUTTON) {
         camera.centerToScreen(x, y);
+        camera_changed();
         glutPostRedisplay();
     }
     if (mode != m_edit) return;
@@ -260,7 +270,9 @@ int main (int argc, char** argv)   // Create Main Function For Bringing It All T
 
   load_current_level();
 
+  atexit(freeSoundProvider);
   glutMainLoop();          // Initialize The Main Loop
+
   return 0;
 }
 

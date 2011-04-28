@@ -15,6 +15,17 @@ file(GLOB sources_files *.cpp libs/*.cpp *.h libs/*.h)
 #addlib(LIBS GLUT)
 #addlib(LIBS OpenGL)
 
+# add libarary with name libname to list liblist
+# extra arguments are pass to find_library
+MACRO(findlib liblist libname)
+    find_library(${libname}_LIB ${libname} PATHS ${ARGN} ${CMAKE_SOURCE_DIR}/extlib/lib)
+    if(NOT ${libname}_LIB)
+        message(FATAL_ERROR "Unable to find library: " ${libname})
+    endif(NOT ${libname}_LIB)
+    message(${libname} " found at: " ${${libname}_LIB})
+    set(${liblist} ${${liblist}} ${${libname}_LIB})
+ENDMACRO(findlib liblist libname)
+
 find_package(GLUT REQUIRED)
 include_directories(${GLUT_INCLUDE_DIRS})
 set(LIBS ${LIBS} ${GLUT_LIBRARIES})
@@ -22,6 +33,12 @@ set(LIBS ${LIBS} ${GLUT_LIBRARIES})
 find_package(OpenGL REQUIRED)
 include_directories(${OPENGL_INCLUDE_DIRS})
 set(LIBS ${LIBS} ${OPENGL_LIBRARIES})
+
+find_package(OpenAL REQUIRED)
+include_directories(${OPENAL_INCLUDE_DIRS})
+set(LIBS ${LIBS} ${OPENAL_LIBRARY})
+
+findlib(LIBS alure)
 
 add_executable(ABCG ${sources_files})
 target_link_libraries(ABCG ${LIBS})

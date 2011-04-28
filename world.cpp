@@ -20,6 +20,8 @@
 #include <algorithm>
 #include <functional>
 
+#include "SoundProvider.h"
+
 World::World()
 :   train(/*dt*V=*/ timeStep * 120.0 /*km/h*/ * 1000.0 / 3600.0 /*->m/s*/, 3.0, -100.0, 0.0, 22.0, 8.0, 100000.0, 30000.0) {
     train.addWagon(20.0, 6.0, 50000.0, 30000.0);
@@ -118,12 +120,13 @@ void World::go() {
 	for (std::list<Node*>::iterator i = unactive_nodes.begin(); i != unactive_nodes.end(); i++)
 		(*i)->pos = (*i)->pos_0; //pilnujemy ¿eby wêz³y uwi±zane mia³y sta³± pozycje
 	for (std::list<Link>::iterator i = links.begin(); i != links.end();)
-	  if (i->toLong()) {
-	     bridge.remove(&(*i));
-	     //unactive_links.push_back(*i); //TODO unactive_links
-         i = links.erase(i);
-         //TODO tu mo¿na by pozbyæ siê z niczym nie po³¹czonych wêz³ów
-      } else ++i;         //usówa zerwane ³acza
+		if (i->toLong()) {
+			soundProvider().playDestroy((i->A.pos + i->B.pos) / 2.0);
+			bridge.remove(&(*i));
+			//unactive_links.push_back(*i); //TODO unactive_links
+			i = links.erase(i);
+			//TODO tu mo¿na by pozbyæ siê z niczym nie po³¹czonych wêz³ów
+      } else ++i;         //usuwa zerwane ³acza
 }
 
 void World::start() {

@@ -1,5 +1,5 @@
 /*
-    ABCG (Another Bridge Construct Game)
+    ABCG (Another Bridge Constructing Game)
     Copyright (C) 2010  Piotr Beling
 
     This program is free software: you can redistribute it and/or modify
@@ -36,45 +36,45 @@ class Link
 {
 	public:
 
-        ///Predyktat sprawdzaj¹cy czy wêze³ jest koñcem linka
+        ///Predyktat sprawdzajï¿½cy czy wï¿½zeï¿½ jest koï¿½cem linka
 	    struct IsEnd : public std::binary_function<Link, Node, bool> {
 	       bool operator() (const Link& link, const Node& node) const {
 	           return (link.A == node || link.B == node);
 	       }
 	    };
 
-	    //masa ³acza
+	    //masa ï¿½acza
         double mass;
 
-        //wsp. sprê¿ystoœæi (modu³ Younga) * pole przekroju poprzecznego / originalLength
-        //F = przyrost d³ugoœci*alfa
+        //wsp. sprï¿½ystoï¿½ï¿½i (moduï¿½ Younga) * pole przekroju poprzecznego / originalLength
+        //F = przyrost dï¿½ugoï¿½ci*alfa
         double alfa;
 
-        //oryginalna d³ugoœæ prêta
+        //oryginalna dï¿½ugoï¿½ï¿½ prï¿½ta
         double originalLength;
 
-        //aktualna d³ugoœæ prêta
+        //aktualna dï¿½ugoï¿½ï¿½ prï¿½ta
         double length;
 
-        //aktualny przyrost d³ugoœæ prêta
+        //aktualny przyrost dï¿½ugoï¿½ï¿½ prï¿½ta
         double deltaLength;
 
-        //koñce prêta
+        //koï¿½ce prï¿½ta
         Node &A, &B;
 
-		//maksymalny wzglêdny przyrost d³ugoœci jaki mo¿e wytrzymaæ belka
+		//maksymalny wzglï¿½dny przyrost dï¿½ugoï¿½ci jaki moï¿½e wytrzymaï¿½ belka
         double maxDeltaLength;
 
    		/**
-            Konstruuje belke o koñcach A, B, gêstoœci massden, przekroju 1.0, której
-            wsp. sprê¿ystoœci (modu³ Younga) resilence
+            Konstruuje belke o koï¿½cach A, B, gï¿½stoï¿½ci massden, przekroju 1.0, ktï¿½rej
+            wsp. sprï¿½ystoï¿½ci (moduï¿½ Younga) resilence
 		*/
-		//gêstoœæ stali to 7850.0, 1/300.0 to przekrój w m^2, 2.19 to modu³ Younga stali
+		//gï¿½stoï¿½ï¿½ stali to 7850.0, 1/300.0 to przekrï¿½j w m^2, 2.19 to moduï¿½ Younga stali
 		Link(Node &A, Node &B, const double massden = 7850.0 / 300.0, const double resilence = 2.19E11 / 300.0, const double maxDeltaLength = 0.015);
 
         //Link(const Link& toCopy);
 
-        //resetuje d³ugoœæ prêta i po³o¿enie, zeruje si³y
+        //resetuje dï¿½ugoï¿½ï¿½ prï¿½ta i poï¿½oï¿½enie, zeruje siï¿½y
         void reset() {
                 A.reset();
                 B.reset();
@@ -82,24 +82,24 @@ class Link
                 deltaLength = 0.0;
         }
 
-        ///dodaje do koñców prêta si³e wynik³¹ z naprê¿enia prêta, czas jest potrzebny do obliczenia t³umienia
+        ///dodaje do koï¿½cï¿½w prï¿½ta siï¿½e wynikï¿½ï¿½ z naprï¿½enia prï¿½ta, czas jest potrzebny do obliczenia tï¿½umienia
         void calcForces() {
             //Fx = (len - orgLen) * alfa * (lX / len) = (1 - orgLen/len) * alfa * lX
             //Fy = (1 - orgLen/len) * alfa * lY
-            double lX = B.pos.x - A.pos.x; //d³ugoœæ X
-            double lY = B.pos.y - A.pos.y; //d³ugoœæ Y
-            length = sqrt(lX * lX + lY * lY);   //aktualna d³ugoœæ prêta
+            double lX = B.pos.x - A.pos.x; //dï¿½ugoï¿½ï¿½ X
+            double lY = B.pos.y - A.pos.y; //dï¿½ugoï¿½ï¿½ Y
+            length = sqrt(lX * lX + lY * lY);   //aktualna dï¿½ugoï¿½ï¿½ prï¿½ta
             this->deltaLength = (1.0 - originalLength/length);
-            double delta = this->deltaLength * alfa; //Wzglêdny przyrost d³ugoœci * alfa
+            double delta = this->deltaLength * alfa; //Wzglï¿½dny przyrost dï¿½ugoï¿½ci * alfa
 
             lX *= delta;
-            //lX += (B.Vx - A.Vx) * 200.0; //t³umienie sprê¿ystoœci
+            //lX += (B.Vx - A.Vx) * 200.0; //tï¿½umienie sprï¿½ystoï¿½ci
 
             A.force.x += lX;
             B.force.x -= lX;
 
             lY *= delta;
-            //lY += (B.Vy - A.Vy) * 200.0; //t³umienie sprê¿ystoœci
+            //lY += (B.Vy - A.Vy) * 200.0; //tï¿½umienie sprï¿½ystoï¿½ci
 
             A.force.y += lY;
             B.force.y -= lY;
@@ -116,27 +116,27 @@ class Link
 		    glEnd();
         };
 
-        //@return czy belka jest zbyt d³uga (i powinna sie zerwaæ)
+        //@return czy belka jest zbyt dï¿½uga (i powinna sie zerwaï¿½)
         bool toLong() {
              return fabs(deltaLength) > maxDeltaLength;
         }
 
 		/**
-		  Przesówa punkt materialny o wsp. x, y oraz siebie tak by punkt znalaz³ sie na belce,
-		  uwzglêdnia przy tym masy punktu i swoj¹ (przesówa proporcjonalnie do mas).
+		  Przesï¿½wa punkt materialny o wsp. x, y oraz siebie tak by punkt znalazï¿½ sie na belce,
+		  uwzglï¿½dnia przy tym masy punktu i swojï¿½ (przesï¿½wa proporcjonalnie do mas).
 		  @param x wsp. x punktu
 		  @param y wsp. y punktu
-		  @param invMass odwrotnoœæ masy punktu (jeœli 0.0 to jedynie belka jest przesówana)
+		  @param invMass odwrotnoï¿½ï¿½ masy punktu (jeï¿½li 0.0 to jedynie belka jest przesï¿½wana)
 		*/
         void correctColision(double& x, double& y, double invMass = 0.0) {
             double lx(B.pos.x - A.pos.x), ly(B.pos.y - A.pos.y);        //wymiary belki
             double q = getPropNorm(x, y, A.pos.x, A.pos.y, lx, ly);
-            lx = A.pos.x + lx * q;            //Punkt na belce, najbli¿szy do x, y
+            lx = A.pos.x + lx * q;            //Punkt na belce, najbliï¿½szy do x, y
             ly = A.pos.y + ly * q;
-            if (invMass != 0.0) {            //jeœli trzeba ruszyæ punkt
+            if (invMass != 0.0) {            //jeï¿½li trzeba ruszyï¿½ punkt
                  double pointMass = 1.0 / invMass;
                  double sumMass = mass + pointMass;
-                 x = (x * pointMass + lx * mass) / sumMass; //przesówam punkt w w³aœciwe miejsce
+                 x = (x * pointMass + lx * mass) / sumMass; //przesï¿½wam punkt w wï¿½aï¿½ciwe miejsce
                  y = (y * pointMass + ly * mass) / sumMass;
             }
             double correct = q * q + sqr(1.0 - q);

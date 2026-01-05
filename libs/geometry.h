@@ -1,5 +1,5 @@
 /*
-    ABCG (Another Bridge Construct Game)
+    ABCG (Another Bridge Constructing Game)
     Copyright (C) 2010  Piotr Beling
 
     This program is free software: you can redistribute it and/or modify
@@ -20,7 +20,7 @@
 #define GEOMETRY_H
 
 /**
-    Zwraca liczbe q tak¹ ¿e odleg³oœæ miêdzy punktami:
+    Zwraca liczbe q takï¿½ ï¿½e odlegï¿½oï¿½ï¿½ miï¿½dzy punktami:
     (x0 + q*dx, y0 + q*dy) oraz (x, y)
     jest minimalna.
 */
@@ -31,7 +31,7 @@ inline T getProp(const T& x, const T& y, const T& x0, const T& y0, const T& dx, 
 }
 
 /**
-    Zwraca liczbe 0.0 <= q <= 1.0 tak¹ ¿e odleg³oœæ miêdzy punktami:
+    Zwraca liczbe 0.0 <= q <= 1.0 takï¿½ ï¿½e odlegï¿½oï¿½ï¿½ miï¿½dzy punktami:
     (x0 + q*dx, y0 + q*dy) oraz (x, y)
     jest minimalna.
 */
@@ -48,8 +48,8 @@ inline T getPropNorm(const T& x, const T& y, const T& x0, const T& y0, const T& 
 //inline T distance();
 
 /**
-    Sprawdza czy punkt (x, y) jest nad prost¹ wyznaczon¹ przez (x0, y0), [dx, dy].
-    Zwraca false jeœli punkt jest na prostej.
+    Sprawdza czy punkt (x, y) jest nad prostï¿½ wyznaczonï¿½ przez (x0, y0), [dx, dy].
+    Zwraca false jeï¿½li punkt jest na prostej.
 */
 template <class T>
 inline bool isOver(const T& x, const T& y, const T& x0, const T& y0, const T& dx, const T& dy) {
@@ -57,8 +57,8 @@ inline bool isOver(const T& x, const T& y, const T& x0, const T& y0, const T& dx
 }
 
 /**
-    Sprawdza czy punkt (x, y) jest nad prost¹ wyznaczon¹ przez (x0, y0), [dx, dy].
-    Zwraca true tak¿e jeœli punkt jest na prostej.
+    Sprawdza czy punkt (x, y) jest nad prostï¿½ wyznaczonï¿½ przez (x0, y0), [dx, dy].
+    Zwraca true takï¿½e jeï¿½li punkt jest na prostej.
 */
 template <class T>
 inline bool isOverOn(const T& x, const T& y, const T& x0, const T& y0, const T& dx, const T& dy) {
@@ -66,7 +66,7 @@ inline bool isOverOn(const T& x, const T& y, const T& x0, const T& y0, const T& 
 }
 
 /**
-    @return warto¶æ iloczynu wektorowego [x1, y1] * [x2, y2]
+    @return wartoï¿½ï¿½ iloczynu wektorowego [x1, y1] * [x2, y2]
 */
 
 template <class T>

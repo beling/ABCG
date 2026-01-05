@@ -1,5 +1,5 @@
-Another Bridge Construct Game
-http://qwak.w8.pl/project:abcg
+Another Bridge Constructing Game
+http://pbeling.w8.pl/project/abcg/
 Piotr Beling
 
 1. English instruction
@@ -14,11 +14,11 @@ P -pause on/off
 L -load bridge from file (must run game with filename parameter)
 S -save bridge to file (must run game with filename parameter)
 
-2. Zbuduj most za pomoc¹ myszy i przetestuj go wciskaj¹c SPACJE.
-W grze dzia³aj¹ te¿ klawisze:
-+ -przybli¿a
+2. Zbuduj most za pomocÄ… myszy i przetestuj go wciskajÄ…c SPACJE.
+W grze dziaÅ‚ajÄ… teÅ¼ klawisze:
++ -przybliÅ¼a
 - -oddala
-strza³ki -przesuwaj¹ widok
-P -pause, zatrzymuje/wznawia gre
-L -³aduje most z pliku (nazwê pliku nale¿y podaæ jako jedyny parametr podczas uruchamiania gry)
-S -zapisuje most do pliku (nazwê pliku nale¿y podaæ jako jedyny parametr podczas uruchamiania gry)
+strzaÅ‚ki -przesuwajÅ„ widok
+P -pause, zatrzymuje/wznawia grÄ™
+L -Å‚aduje most z pliku (nazwÄ™ pliku naleÅ¼y podaÄ‡ jako jedyny parametr podczas uruchamiania gry)
+S -zapisuje most do pliku (nazwÄ™ pliku naleÅ¼y podaÄ‡ jako jedyny parametr podczas uruchamiania gry)

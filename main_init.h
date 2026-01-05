@@ -1,5 +1,5 @@
 /*
-    ABCG (Another Bridge Construct Game)
+    ABCG (Another Bridge Constructing Game)
     Copyright (C) 2010  Piotr Beling
 
     This program is free software: you can redistribute it and/or modify
@@ -37,16 +37,16 @@ Menu menu(10, 10);
 World world;
 LevelsProvider levels;
 
-///Czy rysowaæ siatkê w trybie edycji?
+///Czy rysowaï¿½ siatkï¿½ w trybie edycji?
 bool grid = true;
 
 int current_level_id = 0;
 
 enum Mode {
-	m_anim, m_pause, m_edit //czy jesteœmy w trybie: 0-animacji, 1-znimacji (pause), 2-edycji
+	m_anim, m_pause, m_edit //czy jesteï¿½my w trybie: 0-animacji, 1-znimacji (pause), 2-edycji
 } mode = m_edit;
 
-vec2d<double> linkStart(NAN, NAN), linkEnd(NAN, NAN); //jeœli rysujemy link to wyznacza jego wsp.
+vec2d<double> linkStart(NAN, NAN), linkEnd(NAN, NAN); //jeï¿½li rysujemy link to wyznacza jego wsp.
 
 void camera_changed() {
 	soundProvider().updateListenerPosition(vec2d<double>(camera.x, camera.y));

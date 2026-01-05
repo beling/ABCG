@@ -1,5 +1,5 @@
 /*
-    ABCG (Another Bridge Construct Game)
+    ABCG (Another Bridge Constructing Game)
     Copyright (C) 2010  Piotr Beling
 
     This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 #include "world.h"
 
 void Vicicle::initLengths() {
-  //zapamiêtuje oryginalne odleg³oœci pomiêdzy punktami:
+  //zapamiï¿½tuje oryginalne odlegï¿½oï¿½ci pomiï¿½dzy punktami:
   //d = hypot(rightDown.x0 - leftDown.x0, rightDown.y0 - leftDown.y0);
   //u = hypot(rightUp.x0 - leftUp.x0, rightUp.y0 - leftUp.y0);
   //l = hypot(leftUp.x0 - leftDown.x0, leftUp.y0 - leftDown.y0);
@@ -83,11 +83,11 @@ void Vicicle::satisfyTerrainConstraints(Terrain& terrain) {
 
 bool Vicicle::satisfyLineConstraint(Link& link, Node& a) {
    if (a.pos.x > link.B.pos.x || link.A.pos.x > a.pos.x)
-      return false;      //szybka eliminacja odleg³ych belek
+      return false;      //szybka eliminacja odlegï¿½ych belek
    double p = dotProdukt(a.pos.x - link.A.pos.x, a.pos.y - link.A.pos.y, link.B.pos.x - link.A.pos.x, link.B.pos.y - link.A.pos.y);
    if (p <= 0 || p/link.length >= l/1000.0) return false;   //belka zbyt daleko
    link.correctColision(a.pos, 1.0 / a.mass);         //OK, poprawiamy
-   return true;   //TODO: ten kod mo¿e ¼le dzia³aæ! wytestowaæ!
+   return true;   //TODO: ten kod moï¿½e ï¿½le dziaï¿½aï¿½! wytestowaï¿½!
 }
 
 void Vicicle::satisfyLineConstraints(Link& link) {

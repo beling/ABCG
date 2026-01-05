@@ -1,5 +1,5 @@
 /*
-    ABCG (Another Bridge Construct Game)
+    ABCG (Another Bridge Constructing Game)
     Copyright (C) 2010  Piotr Beling
 
     This program is free software: you can redistribute it and/or modify
@@ -28,10 +28,10 @@ class Camera2d {
 
 	public:
 
-	///wsp. rzeczywiste wskazywane przez kamere (na œrodku ekranu)
+	///wsp. rzeczywiste wskazywane przez kamere (na ï¿½rodku ekranu)
     double x, y, zoom;
 
-    ///rzeczywista wysokoœæ i szerokoœæ obrazu (w pikselach)
+    ///rzeczywista wysokoï¿½ï¿½ i szerokoï¿½ï¿½ obrazu (w pikselach)
     int w, h;
 
 	Camera2d(double x, double y, double zoom)
@@ -39,13 +39,13 @@ class Camera2d {
 
 	~Camera2d();
 
-    ///ustawia obraz openGL zgodnie z kamer¹
+    ///ustawia obraz openGL zgodnie z kamerï¿½
     void set() const;
 
-    ///zapamiêtuje nowy rozmiar okna
+    ///zapamiï¿½tuje nowy rozmiar okna
     void resize(int width, int height);
 
-    ///przelicza podan¹ wspó³rzêdn¹ ekranow¹ x na rzeczywist¹ (w rysowanym œwiecie)
+    ///przelicza podanï¿½ wspï¿½rzï¿½dnï¿½ ekranowï¿½ x na rzeczywistï¿½ (w rysowanym ï¿½wiecie)
     double realX(int x) const {
         return this->x + ((double) x - (double)w/2.0) / zoom;
     }
@@ -54,7 +54,7 @@ class Camera2d {
     	return int((x - this->x) * zoom + double(w)/2.0);
     }
 
-    ///przelicza podan¹ wspó³rzêdn¹ ekranow¹ y na rzeczywist¹ (w rysowanym œwiecie)
+    ///przelicza podanï¿½ wspï¿½rzï¿½dnï¿½ ekranowï¿½ y na rzeczywistï¿½ (w rysowanym ï¿½wiecie)
     double realY(int y) const {
         return this->y + ((double)h/2.0 - (double) y) / zoom;
     }
@@ -90,19 +90,19 @@ class Camera2d {
         set();
     }
 
-    ///przesówa kamere o podany wektor
+    ///przesï¿½wa kamere o podany wektor
     void translate(double x, double y) {
         this->x += x;
         this->y += y;
         set();
     }
 
-    ///Ustawia normaln¹ szerokoœæ linii (równ¹ 1)
+    ///Ustawia normalnï¿½ szerokoï¿½ï¿½ linii (rï¿½wnï¿½ 1)
     void normalLine() const {
         glLineWidth(1.0);
     }
 
-    ///Ustawia gruboœæ lini uwzglêdniaj¹c zoom
+    ///Ustawia gruboï¿½ï¿½ lini uwzglï¿½dniajï¿½c zoom
     void zoomedLine() const {
         glLineWidth(zoom*1.4);
     }

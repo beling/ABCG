@@ -1,5 +1,5 @@
 /*
-    ABCG (Another Bridge Construct Game)
+    ABCG (Another Bridge Constructing Game)
     Copyright (C) 2010  Piotr Beling
 
     This program is free software: you can redistribute it and/or modify
@@ -30,27 +30,27 @@
 #include "libs/vec2d.h"
 
 /**
- * Pod³o¿e jest opisane za pomoc¹ ci¹gu wysokoœci odleg³ych o pewien krok (step), 
- * wsp. kolejnych punktów to:
+ * Podï¿½oï¿½e jest opisane za pomocï¿½ ciï¿½gu wysokoï¿½ci odlegï¿½ych o pewien krok (step), 
+ * wsp. kolejnych punktï¿½w to:
  * ..., (-step, 0.0), (0.0, heights[0]), (step, heights[1]), ..., (n*step, heights[n]), ((n+1)*step, 0.0), ...
  * gdzie n = heights.size - 1
  */
 class Terrain
 {
-		///najni¿szy punkt terenu
+		///najniï¿½szy punkt terenu
 		double _lowest;
 	
 	public:
 		
 		double lowest() { return _lowest; }
 	
-	    ///szerokoœæ jednego segmentu
+	    ///szerokoï¿½ï¿½ jednego segmentu
 	    double step;
 	    
-	    ///wysokoœci dla kolejnych punktów
+	    ///wysokoï¿½ci dla kolejnych punktï¿½w
 	    std::vector<double> heights;
 	    
-	    ///pobiera wysokoœæ wierzcho³ka
+	    ///pobiera wysokoï¿½ï¿½ wierzchoï¿½ka
 	    const double operator[](unsigned index) const {
 	       return (index >= heights.size()) ? 0.0 : heights[index];
 	    }
@@ -63,25 +63,25 @@ class Terrain
 	    }
 	    
 	    /**
-          Koryguje po³o¿enie punktu do najbli¿szego punktu na planszy
-          @return true jeœli punkt zosta³ przesuniêty (kolidowa³)
+          Koryguje poï¿½oï¿½enie punktu do najbliï¿½szego punktu na planszy
+          @return true jeï¿½li punkt zostaï¿½ przesuniï¿½ty (kolidowaï¿½)
         */
 	    bool correctPoint(double& x, double& y) const {
            int i = (int)floor(x / step);
            double x0(step * i), y0((*this)[i]), y1((*this)[i+1]);
            double deltay(y1 - y0);
-           //sprawdzamy czy punkt ma dobre po³o¿enie
-	       //warunek po || by wystarczy³ ale war. z && odrzuca wiêkszoœæ przypadków
+           //sprawdzamy czy punkt ma dobre poï¿½oï¿½enie
+	       //warunek po || by wystarczyï¿½ ale war. z && odrzuca wiï¿½kszoï¿½ï¿½ przypadkï¿½w
 	       if ((y > y0 && y > y1) || isOverOn(x, y, x0, y0, step, deltay))
                return false; 
-           //nast¹pi³a kolizja, przesówamy pnunkt w najbli¿sze dozwolone wspó³¿êdne
-           //to nie dzia³a za szybko wiêc miejmy nadzieje ¿e wyst¹pi ¿adko: 
+           //nastï¿½piï¿½a kolizja, przesï¿½wamy pnunkt w najbliï¿½sze dozwolone wspï¿½ï¿½dne
+           //to nie dziaï¿½a za szybko wiï¿½c miejmy nadzieje ï¿½e wystï¿½pi ï¿½adko: 
            double q = getPropNorm(x, y, x0, y0, step, deltay);
-           x0 += q * step;          //potencjalne nowe wspó³rzêdne
+           x0 += q * step;          //potencjalne nowe wspï¿½rzï¿½dne
            y0 += q * deltay;
            //double dist = hypot(x - x0, y - y0);//sqrt(sqr(x - x0) + sqr(y - y0));
            
-           x = x0;  //TODO: sprawdziæ odcinki oddalone nie dalej ni¿ dist
+           x = x0;  //TODO: sprawdziï¿½ odcinki oddalone nie dalej niï¿½ dist
            y = y0;
            
            return true;      
@@ -98,45 +98,45 @@ class Terrain
 		~Terrain();
 		
 		/**
-         rezerwuje teren tak by d³ugoœæ wynosi³a conajmniej minLen
-		 nowy kawa³ek terenu ma wysokoœæ height
+         rezerwuje teren tak by dï¿½ugoï¿½ï¿½ wynosiï¿½a conajmniej minLen
+		 nowy kawaï¿½ek terenu ma wysokoï¿½ï¿½ height
 		*/
 		void reserve(unsigned minLen, double height = 0.0) {
 		  if (minLen > heights.size()) heights.resize(minLen, height);
 		}
 		
 		/**
-         dr¹¿y dó³/górke o g³êbokoœci/wysokoœci |height| i d³ugoœci steps odcinków od start
+         drï¿½ï¿½y dï¿½/gï¿½rke o gï¿½ï¿½bokoï¿½ci/wysokoï¿½ci |height| i dï¿½ugoï¿½ci steps odcinkï¿½w od start
          (na polach start, start+1, ..., start + steps)
-         aproksymuje parabol¹, skrajne punkty pozostaj¹ nie zmienione
-         @param height g³êbokoœæ do³u (ujemna dla wg³êbieñ)
-         @param start punkt od którego powinien siê zaczynaæ dó³
-         @param steps iloœæ odcinków jakie nale¿y zmieniæ
+         aproksymuje parabolï¿½, skrajne punkty pozostajï¿½ nie zmienione
+         @param height gï¿½ï¿½bokoï¿½ï¿½ doï¿½u (ujemna dla wgï¿½ï¿½bieï¿½)
+         @param start punkt od ktï¿½rego powinien siï¿½ zaczynaï¿½ dï¿½
+         @param steps iloï¿½ï¿½ odcinkï¿½w jakie naleï¿½y zmieniï¿½
         */ 
 		//void createHole(double height, unsigned start, unsigned steps);
 		
 		/**
-		 dr¹¿y dó³ w oparciu o krzyw¹ Bezier'a 3 stopnia
+		 drï¿½ï¿½y dï¿½ w oparciu o krzywï¿½ Bezier'a 3 stopnia
 		*/
 		//void createHole(double height1, double height2, unsigned start, unsigned steps);
 		
 		///Rysuje teren
 		void draw(const Camera2d& c) const;
 		
-		///@return gdzie sie zaczyna wg³êbienie
+		///@return gdzie sie zaczyna wgï¿½ï¿½bienie
 		double fromX() const {
 		  return -step;
 		}
 		
-		///@return gdzie sie koñczy wg³êbienie
+		///@return gdzie sie koï¿½czy wgï¿½ï¿½bienie
 		double toX() const {
 		  return heights.size() * step;
 		}
 		
-		///Wczytuje teren ze strumienia. Krok, iloœæ wysokoœci i kolejne wysokoœci.
+		///Wczytuje teren ze strumienia. Krok, iloï¿½ï¿½ wysokoï¿½ci i kolejne wysokoï¿½ci.
         friend std::istream &operator>>(std::istream& in, Terrain &t);
         
-        ///Zapisuje teren do strumienia. Krok, iloœæ wysokoœci i kolejne wysokoœci.
+        ///Zapisuje teren do strumienia. Krok, iloï¿½ï¿½ wysokoï¿½ci i kolejne wysokoï¿½ci.
         friend std::ostream& operator<<(std::ostream& out, Terrain &t);
 		
 };

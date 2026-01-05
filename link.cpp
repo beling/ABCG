@@ -1,5 +1,5 @@
 /*
-    ABCG (Another Bridge Construct Game)
+    ABCG (Another Bridge Constructing Game)
     Copyright (C) 2010  Piotr Beling
 
     This program is free software: you can redistribute it and/or modify
@@ -20,7 +20,7 @@
 
 Link::Link(Node &A, Node &B, const double massden, const double resilence, const double maxDeltaLength)
 : A(A), B(B), maxDeltaLength(maxDeltaLength) {
-    length = originalLength = A.pos.distans(B.pos); //d³ugo¶æ
+    length = originalLength = A.pos.distans(B.pos); //dï¿½ugoï¿½ï¿½
     deltaLength = 0.0;
     mass = massden * originalLength;           //masa
     alfa = resilence / originalLength;        //wsp. alfa
@@ -32,4 +32,4 @@ Link::Link(Node &A, Node &B, const double massden, const double resilence, const
   maxDeltaLength(toCopy.maxDeltaLength), A(toCopy.A), B(toCopy.B) {};*/
 
 
-//nie zmieniaæ masy node w destruktorze i konstruktorze bo s¹ one wywo³ywane w doœæ przypadkowych momentach w programie!!!
+//nie zmieniaï¿½ masy node w destruktorze i konstruktorze bo sï¿½ one wywoï¿½ywane w doï¿½ï¿½ przypadkowych momentach w programie!!!

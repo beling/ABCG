@@ -1,5 +1,5 @@
 /*
-    ABCG (Another Bridge Construct Game)
+    ABCG (Another Bridge Constructing Game)
     Copyright (C) 2010  Piotr Beling
 
     This program is free software: you can redistribute it and/or modify
@@ -31,14 +31,14 @@
 #include "Enviroment.h"
 
 /**
- * Reprezentuje œwiat gry, zawiera ca³¹ fizyke i umie siê narysowaæ
+ * Reprezentuje ï¿½wiat gry, zawiera caï¿½ï¿½ fizyke i umie siï¿½ narysowaï¿½
  */
 class World {
 	
     private:
         std::list<Node>::iterator addNode(const Node& toAdd);
         
-        /// czyœci links i kopiuje links_all na jego miejsce
+        /// czyï¿½ci links i kopiuje links_all na jego miejsce
         void clone_links_list();
     
 	public:
@@ -56,37 +56,37 @@ class World {
 	   /// aktualny czas
 	    double time;
 	    
-	   /// Iloœæ kasy do wydania
+	   /// Iloï¿½ï¿½ kasy do wydania
 	    double money_limit;
 	
 	   /// teren
         Terrain terrain;
         
-       /// poci¹g 
+       /// pociï¿½g 
         Train train;
         
-       /// wszystkie ³¹cza
+       /// wszystkie ï¿½ï¿½cza
         std::list<Link> links_all;
         
-       /// ³¹cza (aktywne), zawieraj¹ te¿ belki mostu
+       /// ï¿½ï¿½cza (aktywne), zawierajï¿½ teï¿½ belki mostu
         std::list<Link> links;
         
-       /// ³acza (nieaktywne, nie poruszamy nimi, po zerwaniu)
+       /// ï¿½acza (nieaktywne, nie poruszamy nimi, po zerwaniu)
         //std::list<Link> unactive_links;
         
-       /// ³acza stanowi¹ce sam most (na wysokoœci 0.0) 
+       /// ï¿½acza stanowiï¿½ce sam most (na wysokoï¿½ci 0.0) 
         std::list<Link*> bridge;
         
-       /// wêz³y
+       /// wï¿½zï¿½y
         std::list<Node> nodes;
 
-       /// wêz³y (nieaktywne, nie poruszamy nimi, g³ównie "zakopane w ziemi")
+       /// wï¿½zï¿½y (nieaktywne, nie poruszamy nimi, gï¿½ï¿½wnie "zakopane w ziemi")
         std::list<Node*> unactive_nodes;
         
-	   /// konstruktor œwiata
+	   /// konstruktor ï¿½wiata
 		World();
 		
-	   /// koniec œwiata
+	   /// koniec ï¿½wiata
 		~World();
 		
 	  /// Rysuje wode
@@ -94,59 +94,59 @@ class World {
 		
 		void draw_sky(const Camera2d& c);
         
-       /// Rysuje ca³y œwiat
+       /// Rysuje caï¿½y ï¿½wiat
 		void draw(const Camera2d& c);
         
-       /// Oblicza stan œwiata po chwili timeStep (powinna byæ doœæ krótka)
+       /// Oblicza stan ï¿½wiata po chwili timeStep (powinna byï¿½ doï¿½ï¿½ krï¿½tka)
         void go();
         
-       /// Resetuje czas, wszelkie po³o¿enia, prêdkoœci, si³y... nale¿y wywo³aæ przed rozpoczêciem animacji
+       /// Resetuje czas, wszelkie poï¿½oï¿½enia, prï¿½dkoï¿½ci, siï¿½y... naleï¿½y wywoï¿½aï¿½ przed rozpoczï¿½ciem animacji
         void start();
        
-       /// Resetuje. Do wywo³ania po animacji.
+       /// Resetuje. Do wywoï¿½ania po animacji.
         void stop();
         
-       /// Usówa wszelkie belki... 
+       /// Usï¿½wa wszelkie belki... 
         void clear();
        
        /**
-          Szuka wêz³a mieszcz¹cego siê w podanym prostok¹cie
-          @return wskaŸnik na znaleziony wêze³ lub nodes->end() gdy ¿aden nie spe³nia kryteriów
+          Szuka wï¿½zï¿½a mieszczï¿½cego siï¿½ w podanym prostokï¿½cie
+          @return wskaï¿½nik na znaleziony wï¿½zeï¿½ lub nodes->end() gdy ï¿½aden nie speï¿½nia kryteriï¿½w
        */
         std::list<Node>::iterator findNode(const double left, const double top, const double right, const double bottom);
           
        /**
-          Szuka wêz³a o podanych wspó³rzêdnych z dok³adnoœci¹ do precysion.
+          Szuka wï¿½zï¿½a o podanych wspï¿½rzï¿½dnych z dokï¿½adnoï¿½ciï¿½ do precysion.
           x wsp. x pozycji
           @param y wsp. y pozycji
-          @param prec wymagana precyzja (maksymalna ró¿nica dla ka¿dej ze wspó³rzêdnych)
-          @return wskaŸnik na znaleziony wêze³ lub nodes->end() gdy ¿aden nie spe³nia kryteriów
+          @param prec wymagana precyzja (maksymalna rï¿½nica dla kaï¿½dej ze wspï¿½rzï¿½dnych)
+          @return wskaï¿½nik na znaleziony wï¿½zeï¿½ lub nodes->end() gdy ï¿½aden nie speï¿½nia kryteriï¿½w
        */
         std::list<Node>::iterator findNode(const double x, const double y, const double prec);
         
        /**
-        Dodaje ³¹cze jeœli nie istnieje ju¿ takie. Dodaje wêz³y w razie potrzeby.
-        @param prec precyzja przy wyszukiwaniu ju¿ istniej¹cych
+        Dodaje ï¿½ï¿½cze jeï¿½li nie istnieje juï¿½ takie. Dodaje wï¿½zï¿½y w razie potrzeby.
+        @param prec precyzja przy wyszukiwaniu juï¿½ istniejï¿½cych
         @return dodany link
        */
         std::list<Link>::iterator addLink(const double x0, const double y0, const double x1, const double y1, const double prec = 0.0);  
         
         bool addLinkIfHaveMonay(const double x0, const double y0, const double x1, const double y1, const double prec = 0.0);  
                 
-       ///Usuwa ³acze lub wêze³ w miejscu o podanych wspó³rzêdnych
+       ///Usuwa ï¿½acze lub wï¿½zeï¿½ w miejscu o podanych wspï¿½rzï¿½dnych
         void delAt(const double x, const double y, const double prec = 0.0);
         
-       ///Wczytuje teren ze strumienia. Krok, iloœæ wysokoœci i kolejne wysokoœci. A nastêpnie most (pary punktów). 
+       ///Wczytuje teren ze strumienia. Krok, iloï¿½ï¿½ wysokoï¿½ci i kolejne wysokoï¿½ci. A nastï¿½pnie most (pary punktï¿½w). 
         friend std::istream& operator>>(std::istream& in, World &V);
         
-        ///Zapisuje teren do strumienia. Krok, iloœæ wysokoœci i kolejne wysokoœci. A nastêpnie most (pary punktów).
+        ///Zapisuje teren do strumienia. Krok, iloï¿½ï¿½ wysokoï¿½ci i kolejne wysokoï¿½ci. A nastï¿½pnie most (pary punktï¿½w).
         friend std::ostream& operator<<(std::ostream& out, World &t);
         
         static double link_prize(double len);
         
         static double link_prize(double x1, double y1, double x2, double y2) { return link_prize(vec2d<double>(x1, y1).distans(x2, y2)); }
         
-        ///Ile kasy pozosta³o
+        ///Ile kasy pozostaï¿½o
 	    double money_left() const;
 	    
 	    bool has_money_for(double len) { return money_left() >= link_prize(len); }

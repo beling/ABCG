@@ -1,5 +1,5 @@
 /*
-    ABCG (Another Bridge Construct Game)
+    ABCG (Another Bridge Constructing Game)
     Copyright (C) 2010  Piotr Beling
 
     This program is free software: you can redistribute it and/or modify
@@ -252,7 +252,7 @@ int main (int argc, char** argv)   // Create Main Function For Bringing It All T
   glutInit(&argc, argv); // Erm Just Write It =)
   glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_ALPHA); // Display Mode
   glutInitWindowSize(500, 500); // If glutFullScreen wasn't called this is the window size
-  glutCreateWindow("Another Bridge Construct Game (Piotr Beling)"); // Window Title
+  glutCreateWindow("Another Bridge Constructing Game (Piotr Beling)"); // Window Title
   //glutFullScreen();          // Put Into Full Screen
   glutDisplayFunc(display);  // Matching Earlier Functions To Their Counterparts
   glutReshapeFunc(reshape);

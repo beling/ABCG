@@ -1,5 +1,5 @@
 /*
-    ABCG (Another Bridge Construct Game)
+    ABCG (Another Bridge Constructing Game)
     Copyright (C) 2010  Piotr Beling
 
     This program is free software: you can redistribute it and/or modify
@@ -28,52 +28,52 @@
 class World;
 
 /***
- * Pojazd, ko³a w dolnych rogach mog¹ go napêdzaæ (dzia³aæ si³¹ do przodu).
- * Na ka¿dy róg mo¿e dzia³aæ niezale¿na si³a.
- * Mo¿na budowaæ bardziej z³o¿one pojazdy poprzez uwspólnianie wie¿cho³ków.
+ * Pojazd, koï¿½a w dolnych rogach mogï¿½ go napï¿½dzaï¿½ (dziaï¿½aï¿½ siï¿½ï¿½ do przodu).
+ * Na kaï¿½dy rï¿½g moï¿½e dziaï¿½aï¿½ niezaleï¿½na siï¿½a.
+ * Moï¿½na budowaï¿½ bardziej zï¿½oï¿½one pojazdy poprzez uwspï¿½lnianie wieï¿½choï¿½kï¿½w.
  */
 class Vicicle
 {
   protected:
-        ///inicjalizuje d³ugo¶ci na aktualne
+        ///inicjalizuje dï¿½ugoï¿½ci na aktualne
         void initLengths();
         
-        ///poprawia odleg³o¶æ pomiêdzy A i B na distance
+        ///poprawia odlegï¿½oï¿½ï¿½ pomiï¿½dzy A i B na distance
         void satisfyDistanceConstraint(Node& A, Node& B, double& distance);
 
   public:
         Node leftDown, rightDown, leftUp, rightUp;
     
-        ///odleg³o¶ci pomiêdzy wêz³ami
+        ///odlegï¿½oï¿½ci pomiï¿½dzy wï¿½zï¿½ami
         double d, l, r, u, dl, ul;
 	
-		/// Konstruuje pojazd o podanych wie¿cho³kach. Wie¿cho³ki powinny stanowiæ figure wypuk³¹.
+		/// Konstruuje pojazd o podanych wieï¿½choï¿½kach. Wieï¿½choï¿½ki powinny stanowiï¿½ figure wypukï¿½ï¿½.
 		Vicicle(const Node& leftDown, const Node& rightDown, const Node& rightUp, const Node& leftUp);
 		
-		/// Konstruuje pojazd w kszta³cie prostok¹ta o masie ca³kowitej 2*upMass + 2*downMass
+		/// Konstruuje pojazd w ksztaï¿½cie prostokï¿½ta o masie caï¿½kowitej 2*upMass + 2*downMass
 		Vicicle(double down, double up, double left, double right, double downMass, double upMass);
 		
 		/// Rysuje pojazd
 		void draw();
 		
-		/// Resetuje po³o¿enie i si³y dzia³aj¹ce na pojazd
+		/// Resetuje poï¿½oï¿½enie i siï¿½y dziaï¿½ajï¿½ce na pojazd
 		void reset();
 		
-		/// Poprawia odleg³oœci miêdzy wêz³ami tak by by³y odpowiednio d, l, r, u, dr, lu
+		/// Poprawia odlegï¿½oï¿½ci miï¿½dzy wï¿½zï¿½ami tak by byï¿½y odpowiednio d, l, r, u, dr, lu
 		void satisfyConstraints();
 		
-		/// Poprawia wêz³y by znalaz³y sie na planszy
+		/// Poprawia wï¿½zï¿½y by znalazï¿½y sie na planszy
 		void satisfyTerrainConstraints(Terrain& terrain);
 		
 		bool satisfyLineConstraint(Link& link, Node& a);
 		
 		/**
-           Poprawia by pojazd znalaz³ siê na podanym kawa³ku trasy (przesówa te¿ trase)
-           je¶li zachodzi kolizja.
+           Poprawia by pojazd znalazï¿½ siï¿½ na podanym kawaï¿½ku trasy (przesï¿½wa teï¿½ trase)
+           jeï¿½li zachodzi kolizja.
         */
 		void satisfyLineConstraints(Link& link);
 		
-		/// Porusza wie¿cho³kami pojazdu
+		/// Porusza wieï¿½choï¿½kami pojazdu
 		void go(const double time, const World& world);
 		
 		void goAndZeroForce(const double timeXtime, const World& world);

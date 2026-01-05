@@ -1,5 +1,5 @@
 /*
-    ABCG (Another Bridge Construct Game)
+    ABCG (Another Bridge Constructing Game)
     Copyright (C) 2010  Piotr Beling
 
     This program is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@
 #include <list>
 
 /**
- * Poci¹g (lokomotywa i kilka wagonów)
+ * Pociï¿½g (lokomotywa i kilka wagonï¿½w)
  */
 class Train
 {        
@@ -36,47 +36,47 @@ class Train
         /// na pozycji 0 lokomotywa, 1-... - wagony 
 	    std::list<Vicicle> wagons;
 	    
-	    /// ³acza pomiêdzy wagonami
+	    /// ï¿½acza pomiï¿½dzy wagonami
 	    std::list<Link> links;
 	    
-	    /// maksymalna zmiana po³o¿nia poci±gu podniesiona do kwadratu = (Vmax * timeStep) ^ 2
+	    /// maksymalna zmiana poï¿½oï¿½nia pociï¿½gu podniesiona do kwadratu = (Vmax * timeStep) ^ 2
 	    double max_delta_r_sqr;
 	    
-		/// odleg³oœæ miedzy wagonami
+		/// odlegï¿½oï¿½ï¿½ miedzy wagonami
 	    double interval;
 	    
-	    /// si³a przyspieszaj±ca w N (na wêze³)
+	    /// siï¿½a przyspieszajï¿½ca w N (na wï¿½zeï¿½)
 	    static const double acc_force = 400000.0;
 	    
 		/** 
-           Tworzy poci¹g gdzie lokomotywa ma podane parametry.
-           @param speed po¿¹dana szybkoœæ poci¹gu
-           @param interval odstêp miêdzy wagonami
+           Tworzy pociï¿½g gdzie lokomotywa ma podane parametry.
+           @param speed poï¿½ï¿½dana szybkoï¿½ï¿½ pociï¿½gu
+           @param interval odstï¿½p miï¿½dzy wagonami
         */
 		Train(double max_delta_r, double interval, double left, double down, double width, double height, double upMass, double downMass);
 	
 	    ///dodaje wagon
 	    void addWagon(double width, double height, double upMass, double downMass);
 	
-		///resetuje po³o¿enia, si³y...    
+		///resetuje poï¿½oï¿½enia, siï¿½y...    
  	    void reset();
  	    
- 	    ///rysuje poci¹g
+ 	    ///rysuje pociï¿½g
  	    void draw();
  	    
- 	    ///oblicza si³y, porusza wagonami po czym zeruje si³y 	    
+ 	    ///oblicza siï¿½y, porusza wagonami po czym zeruje siï¿½y 	    
  	    void go(const double time, const World& world);
  	    
 		/**
-           Poprawia by poci¹g (wszystkie wagony) znalaz³y siê na podanym kawa³ku trasy
-           (przesówa te¿ trase) jeœli zachodzi kolizja.
+           Poprawia by pociï¿½g (wszystkie wagony) znalazï¿½y siï¿½ na podanym kawaï¿½ku trasy
+           (przesï¿½wa teï¿½ trase) jeï¿½li zachodzi kolizja.
         */
 		void satisfyLineConstraints(Link& link);
  	    
  	    ///kolizja z terenem
  	    void satisfyTerrainConstraints(Terrain& terrain);
  	    
-		/// Poprawia kszta³t wszystkich wagonów
+		/// Poprawia ksztaï¿½t wszystkich wagonï¿½w
 		void satisfyConstraints();
 };
 

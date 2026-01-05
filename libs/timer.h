@@ -1,5 +1,5 @@
 /*
-    ABCG (Another Bridge Construct Game)
+    ABCG (Another Bridge Constructing Game)
     Copyright (C) 2010  Piotr Beling
 
     This program is free software: you can redistribute it and/or modify
@@ -24,8 +24,8 @@
 #include <iomanip>  
 
 /**
- * Zegarek, mierzy odstêpy czasowe z dok³adnoœci¹ do 0.001 sec.
- * Powy¿ej 1/2h precyzja maleje do 1sec.
+ * Zegarek, mierzy odstï¿½py czasowe z dokï¿½adnoï¿½ciï¿½ do 0.001 sec.
+ * Powyï¿½ej 1/2h precyzja maleje do 1sec.
  */
 class Timer {
 	
@@ -45,7 +45,7 @@ class Timer {
         
         /**
          * Restartuje zegar.
-         * @return ile sekund up³yne³o od poprzedniego restartu zegara.
+         * @return ile sekund upï¿½yneï¿½o od poprzedniego restartu zegara.
          */
         double intervalSec() {
         	double result = getSec();
@@ -53,10 +53,10 @@ class Timer {
         	return result;
         }
         
-        ///@return ile sekund up³yne³o od poprzedniego restartu zegara.
+        ///@return ile sekund upï¿½yneï¿½o od poprzedniego restartu zegara.
         double getSec() const {
         	time_t acc_sec = time(0) - start_time;
-			if (acc_sec < 3600)	//mamy dok³adny czas?
+			if (acc_sec < 3600)	//mamy dokï¿½adny czas?
 				return double(clock() - start_clock) / double(CLOCKS_PER_SEC);
 			else
 				return double(acc_sec);

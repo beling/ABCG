@@ -1,5 +1,5 @@
 /*
-    ABCG (Another Bridge Construct Game)
+    ABCG (Another Bridge Constructing Game)
     Copyright (C) 2010  Piotr Beling
 
     This program is free software: you can redistribute it and/or modify
@@ -43,7 +43,7 @@ Terrain::~Terrain()
         heights[start + i] += delta;
         heights[last - i] += delta;
     }
-    if (!steps & 1) //nieparzysta iloœæ punktów do przesuniêcia
+    if (!steps & 1) //nieparzysta iloï¿½ï¿½ punktï¿½w do przesuniï¿½cia
         heights[start + steps/2] += height;
 };*/ //BUG??
 
@@ -65,7 +65,7 @@ inline void terrainVertex(double x, double y) {
 	glVertex2d(x, y);
 }
 
-//TODO: skompilowaæ i u¿ywaæ list openGL
+//TODO: skompilowaï¿½ i uï¿½ywaï¿½ list openGL
 void Terrain::draw(const Camera2d& c) const {
     double b = c.realBottom();
     if (b > 0.0) return; //kamera patrzy za wysoko
@@ -94,7 +94,7 @@ void Terrain::draw(const Camera2d& c) const {
 std::istream& operator>>(std::istream& in, Terrain &t) {
     int len;
     in >> t.step;
-    in >> len; //d³ugoœæ
+    in >> len; //dï¿½ugoï¿½ï¿½
     t.heights.clear();
     t.reserve(len);
     t._lowest = 0.0;

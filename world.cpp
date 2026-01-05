@@ -1,5 +1,5 @@
 /*
-    ABCG (Another Bridge Construct Game)
+    ABCG (Another Bridge Constructing Game)
     Copyright (C) 2010  Piotr Beling
 
     This program is free software: you can redistribute it and/or modify
@@ -105,33 +105,33 @@ void World::draw(const Camera2d& c) {
 void World::go() {
     time += timeStep;
     //for (std::list<Node>::iterator i = nodes.begin(); i != nodes.end(); i++)
-    //    i->forceX = i->forceY = 0.0;        //zeruje si³y
+    //    i->forceX = i->forceY = 0.0;        //zeruje siï¿½y
 	for (std::list<Link>::iterator i = links.begin(); i != links.end(); i++)
-        i->calcForces();                    //dodaje si³y od belek
+        i->calcForces();                    //dodaje siï¿½y od belek
     for (std::list<Node>::iterator i = nodes.begin(); i != nodes.end(); i++) {
-        i->goAndZeroForce(timeStep, enviroment(i->pos.y));        //poruszam wêz³y i zeruje si³y
-        terrain.correctPoint(i->pos);		//pilnuje by nie wylecia³y za plansze
+        i->goAndZeroForce(timeStep, enviroment(i->pos.y));        //poruszam wï¿½zï¿½y i zeruje siï¿½y
+        terrain.correctPoint(i->pos);		//pilnuje by nie wyleciaï¿½y za plansze
     }
-    train.go(timeStep, *this);        //porusza poci±giem
+    train.go(timeStep, *this);        //porusza pociï¿½giem
     for (std::list<Link*>::iterator i = bridge.begin(); i != bridge.end(); i++)
         train.satisfyLineConstraints(**i); //kolizja z belkami mostu
     train.satisfyTerrainConstraints(terrain); //kolizja z terenem
-	train.satisfyConstraints();//Poprawia kszta³t wszystkich wagonów
+	train.satisfyConstraints();//Poprawia ksztaï¿½t wszystkich wagonï¿½w
 	for (std::list<Node*>::iterator i = unactive_nodes.begin(); i != unactive_nodes.end(); i++)
-		(*i)->pos = (*i)->pos_0; //pilnujemy ¿eby wêz³y uwi±zane mia³y sta³± pozycje
+		(*i)->pos = (*i)->pos_0; //pilnujemy ï¿½eby wï¿½zï¿½y uwiï¿½zane miaï¿½y staï¿½ï¿½ pozycje
 	for (std::list<Link>::iterator i = links.begin(); i != links.end();)
 		if (i->toLong()) {
 			soundProvider().playDestroy((i->A.pos + i->B.pos) / 2.0);
 			bridge.remove(&(*i));
 			//unactive_links.push_back(*i); //TODO unactive_links
 			i = links.erase(i);
-			//TODO tu mo¿na by pozbyæ siê z niczym nie po³¹czonych wêz³ów
-      } else ++i;         //usuwa zerwane ³acza
+			//TODO tu moï¿½na by pozbyï¿½ siï¿½ z niczym nie poï¿½ï¿½czonych wï¿½zï¿½ï¿½w
+      } else ++i;         //usuwa zerwane ï¿½acza
 }
 
 void World::start() {
    	stop();
-   	//obliczanie masy wêz³ów:
+   	//obliczanie masy wï¿½zï¿½ï¿½w:
     for (std::list<Link>::iterator i = links.begin(); i != links.end(); i++) {
         i->A.mass += i->mass / 2.0;
         i->B.mass += i->mass / 2.0;
@@ -140,11 +140,11 @@ void World::start() {
 
 void World::stop() {
     time = 0.0;
-	//kopiujemy link do g³ównej listy
+	//kopiujemy link do gï¿½ï¿½wnej listy
     clone_links_list();
 
     for (std::list<Node>::iterator i = nodes.begin(); i != nodes.end(); i++)
-   	    i->reset();  //resetuje wêz³y
+   	    i->reset();  //resetuje wï¿½zï¿½y
 
    	bridge.clear();
    	for (std::list<Link>::iterator i = links.begin(); i != links.end(); i++) {
@@ -152,7 +152,7 @@ void World::stop() {
    	    if (i->A.pos.y == 0.0 && i->B.pos.y == 0.0) //belka stanowi most
    	            bridge.push_back(&*i);
     }
-   	train.reset(); //resetuje pozycje poci¹gu
+   	train.reset(); //resetuje pozycje pociï¿½gu
 }
 
 std::list<Node>::iterator World::findNode(const double left, const double top, const double right, const double bottom) {
@@ -178,20 +178,20 @@ std::list<Link>::iterator World::addLink(const double x0, const double y0, const
 	std::list<Node>::iterator first = findNode(x0, y0, prec);
     std::list<Node>::iterator second = findNode(x1, y1, prec);
 
-    if (first != nodes.end() && second != nodes.end()) //jesli istnieje ju¿ link ³¹cz¹cy to wychodzimy
+    if (first != nodes.end() && second != nodes.end()) //jesli istnieje juï¿½ link ï¿½ï¿½czï¿½cy to wychodzimy
         for (std::list<Link>::iterator l = links.begin(); l != links.end(); l++)
             if (Link::IsEnd()(*l, *first) && Link::IsEnd()(*l, *second)) return l;
 
-    if (first == nodes.end())  //dodaje wêze³ jeœli potrzebny
+    if (first == nodes.end())  //dodaje wï¿½zeï¿½ jeï¿½li potrzebny
         first = addNode(Node(x0, y0, 500.0));
 
-    if (second == nodes.end()) //dodaje wêze³ jeœli potrzebny
+    if (second == nodes.end()) //dodaje wï¿½zeï¿½ jeï¿½li potrzebny
         second = addNode(Node(x1, y1, 500.0));
 
-    if (first->pos.x > second->pos.x) //sortujemy po wspó³rzêdnej x
+    if (first->pos.x > second->pos.x) //sortujemy po wspï¿½rzï¿½dnej x
         links_all.push_back(Link(*second, *first));
     else
-    	links_all.push_back(Link(*first, *second));//Dodaje nowe ³¹cze
+    	links_all.push_back(Link(*first, *second));//Dodaje nowe ï¿½ï¿½cze
     links.push_back(links_all.back());
 
     return --links_all.end();
@@ -213,18 +213,18 @@ void World::clone_links_list() {
 
 void World::delAt(const double x, const double y, const double prec) {
     std::list<Node>::iterator node = findNode(x, y, prec);
-    if (node == nodes.end()) {   //nie klikniêto na wie¿cho³ek. TODO: poszukaæ i usun¹æ link
+    if (node == nodes.end()) {   //nie klikniï¿½to na wieï¿½choï¿½ek. TODO: poszukaï¿½ i usunï¿½ï¿½ link
         return;
     }
-    //usówamy wie¿cho³ek
-    //najpierw wszystkie przyleg³e linki i ew. wie¿cho³ki stopnia 1
+    //usï¿½wamy wieï¿½choï¿½ek
+    //najpierw wszystkie przylegï¿½e linki i ew. wieï¿½choï¿½ki stopnia 1
     for (std::list<Link>::iterator l = find_if(links_all.begin(), links_all.end(), std::bind2nd(Link::IsEnd(), *node));
          l != links_all.end(); l = find_if(l, links_all.end(), std::bind2nd(Link::IsEnd(), *node))) {
              Node& toDel = (l->A == *node ? l->B : l->A); //2gi koniec linka
-             l = links_all.erase(l); //usówam link i przesówam wskaŸnik
+             l = links_all.erase(l); //usï¿½wam link i przesï¿½wam wskaï¿½nik
              if (count_if(links_all.begin(), links_all.end(), std::bind2nd(Link::IsEnd(), toDel)) == 0) {
                   unactive_nodes.remove(&toDel);
-                  nodes.remove(toDel);        //jest nieu¿ywany wiêc usówamy
+                  nodes.remove(toDel);        //jest nieuï¿½ywany wiï¿½c usï¿½wamy
              }
          }
     clone_links_list();

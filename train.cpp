@@ -1,5 +1,5 @@
 /*
-    ABCG (Another Bridge Construct Game)
+    ABCG (Another Bridge Constructing Game)
     Copyright (C) 2010  Piotr Beling
 
     This program is free software: you can redistribute it and/or modify
@@ -42,7 +42,7 @@ void Train::reset() {
         i->leftDown.prev_pos.x -= max_delta_r;
         i->rightDown.prev_pos.x -= max_delta_r;
         i->leftUp.prev_pos.x-= max_delta_r;
-        i->rightUp.prev_pos.x -= max_delta_r; */       //nadaje ¿¹dan¹ prêdkoœæ
+        i->rightUp.prev_pos.x -= max_delta_r; */       //nadaje ï¿½ï¿½danï¿½ prï¿½dkoï¿½ï¿½
     }
     for (std::list<Link>::iterator i = links.begin(); i != links.end(); i++)
         i->reset();
@@ -70,10 +70,10 @@ void Train::speedUpIfNeed(Node& node, const double& dx, const double& dy, const 
 }
 
 void Train::satisfyLineConstraints(Link& link) {
-    if (link.A.pos.x >= link.B.pos.x)   //belki odwrócone nas nie interesuj¹
+    if (link.A.pos.x >= link.B.pos.x)   //belki odwrï¿½cone nas nie interesujï¿½
         return;
     std::list<Vicicle>::iterator i = wagons.begin();
-    //je¶li lokomotywa jedzie po szynach, mo¿na próbowaæ przyspieszaæ:
+    //jeï¿½li lokomotywa jedzie po szynach, moï¿½na prï¿½bowaï¿½ przyspieszaï¿½:
     if (i->satisfyLineConstraint(link, i->leftDown))
         speedUpIfNeed(i->leftDown, link.B.pos.x - link.A.pos.x, link.B.pos.y - link.A.pos.y, link.length);
 

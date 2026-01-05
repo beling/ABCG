@@ -18,7 +18,7 @@ S -save bridge to file (must run game with filename parameter)
 W grze działają też klawisze:
 + -przybliża
 - -oddala
-strzałki -przesuwajń widok
+strzałki -przesuwają widok
 P -pause, zatrzymuje/wznawia grę
 L -ładuje most z pliku (nazwę pliku należy podać jako jedyny parametr podczas uruchamiania gry)
 S -zapisuje most do pliku (nazwę pliku należy podać jako jedyny parametr podczas uruchamiania gry)

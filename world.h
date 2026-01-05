@@ -43,9 +43,9 @@ class World {
     
 	public:
 		/// Krok czasowy
-		static const double timeStep = 0.00003;
+		constexpr static const double timeStep = 0.00003;
 		
-		static const double water_y = -10.0;
+		constexpr static const double water_y = -10.0;
 		
 		static const Enviroment& enviroment(const double y) {
 			static Enviroment normal(0.000001, gravForce);

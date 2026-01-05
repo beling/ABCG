@@ -19,6 +19,12 @@
 #ifndef GEOMETRY_H
 #define GEOMETRY_H
 
+///@return a*a
+template <class T>
+inline T sqr(const T& a) {
+    return a * a;
+}
+
 /**
     Zwraca liczbe q tak� �e odleg�o�� mi�dzy punktami:
     (x0 + q*dx, y0 + q*dy) oraz (x, y)
@@ -74,10 +80,5 @@ inline T dotProdukt(const T& x1, const T& y1, const T& x2, const T& y2) {
     return x1 * y2 - x2 * y1;
 }
 
-///@return a*a
-template <class T>
-inline T sqr(const T& a) {
-    return a * a;
-}
 
 #endif // GEOMETRY_H

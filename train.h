@@ -46,7 +46,7 @@ class Train
 	    double interval;
 	    
 	    /// si�a przyspieszaj�ca w N (na w�ze�)
-	    static const double acc_force = 400000.0;
+	    constexpr static const double acc_force = 400000.0;
 	    
 		/** 
            Tworzy poci�g gdzie lokomotywa ma podane parametry.

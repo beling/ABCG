@@ -40,7 +40,7 @@ struct OpenALSoundProvider: public SoundProvider {
 	    return result;
 	}
 
-	void throwOnAlError(const char* error_str = "OpenAL error") throw (std::runtime_error) {
+	void throwOnAlError(const char* error_str = "OpenAL error") noexcept(false) {
 		if (alGetError() != AL_NO_ERROR) {
 			alureShutdownDevice();
 			throw std::runtime_error(error_str);
